@@ -1,0 +1,448 @@
+Sala_I_CP;Sala I - Casacion Penal;N/A
+Sala_II_CP;Sala II - Casacion Penal;N/A
+Sala_III_CP;Sala III - Casacion Penal;N/A
+Sala_IV_CP;Sala IV - Casacion Penal;N/A
+JNEP_Nro.1;Juzgado Nacional de Ejecucion Penal Nro. 1;N/A
+JNEP_Nro.2;Juzgado Nacional de Ejecucion Penal Nro. 2;N/A
+JNEP_Nro.3;Juzgado Nacional de Ejecucion Penal Nro. 3;N/A
+JNEP_Nro.4;Juzgado Nacional de Ejecucion Penal Nro. 4;N/A
+JNEP_Nro.5;Juzgado Nacional de Ejecucion Penal Nro. 5;N/A
+Sala_I_SS;Sala I - Seguridad Social;N/A
+Sala_II_SS;Sala II - Seguridad Social;N/A
+Sala_III_SS;Sala III - Seguridad Social;N/A
+JFSS_Nro.1_SecNro.1;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 1;Secretaria Nro. 1
+JFSS_Nro.1_SecETF;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 1;Secretaria de Ejecucion Tributaria y Fiscal
+JFSS_Nro.2_SecNro.1;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 2 ;Secretaria Nro. 1
+JFSS_Nro.2_SecETF;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 2 ;Secretaria de Ejecucion Tributaria y Fiscal
+JFSS_Nro.3_SecNro.1;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 3;Secretaria Nro. 1
+JFSS_Nro.3_SecETF;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 3;Secretaria de Ejecucion Tributaria y Fiscal
+JFSS_Nro.4_SecNro.1;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 4;Secretaria Nro. 1
+JFSS_Nro.4_SecETF;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 4;Secretaria de Ejecucion Tributaria y Fiscal
+JFSS_Nro.5_SecNro.1;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 5;Secretaria Nro. 1
+JFSS_Nro.5_SecETF;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 5;Secretaria de Ejecucion Tributaria y Fiscal
+JFSS_Nro.6_SecNro.1;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 6;Secretaria Nro. 1
+JFSS_Nro.6_SecETF;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 6;Secretaria de Ejecucion Tributaria y Fiscal
+JFSS_Nro.7_SecNro.1;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 7;Secretaria Nro. 1
+JFSS_Nro.7_SecETF;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 7;Secretaria de Ejecucion Tributaria y Fiscal
+JFSS_Nro.8_SecNro.1;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 8;Secretaria Nro. 1
+JFSS_Nro.8_SecETF;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 8;Secretaria de Ejecucion Tributaria y Fiscal
+JFSS_Nro.9_SecNro.1;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 9;Secretaria Nro. 1
+JFSS_Nro.9_SecETF;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 9;Secretaria de Ejecucion Tributaria y Fiscal
+JFSS_Nro.10_SecNro.1;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 10;Secretaria Nro. 1
+JFSS_Nro.10_SecETF;Juzgado Federal de Primera Instancia de la Seguridad Social Nro. 10;Secretaria de Ejecucion Tributaria y Fiscal
+Sala_A_CO;Sala A - Comercial   ;N/A
+Sala_B_CO;Sala B - Comercial   ;N/A
+Sala_C_CO;Sala C - Comercial   ;N/A
+Sala_D_CO;Sala D - Comercial   ;N/A
+Sala_E_CO;Sala E - Comercial   ;N/A
+Sala_F_CO;Sala F - Comercial   ;N/A
+JCO_Nro.1_SecNro.1;Juzgado Comercial Nro. 1   ;Secretaria Nro. 1   
+JCO_Nro.1_SecNro.2;Juzgado Comercial Nro. 1   ;Secretaria Nro. 2   
+JCO_Nro.2_SecNro.3;Juzgado Comercial Nro. 2   ;Secretaria Nro. 3   
+JCO_Nro.2_SecNro.4;Juzgado Comercial Nro. 2   ;Secretaria Nro. 4   
+JCO_Nro.2_SecNro.200;Juzgado Comercial Nro. 2   ;Secretaria Nro. 200   
+JCO_Nro.3_SecNro.5;Juzgado Comercial Nro. 3   ;Secretaria Nro. 5   
+JCO_Nro.3_SecNro.6;Juzgado Comercial Nro. 3   ;Secretaria Nro. 6   
+JCO_Nro.4_SecNro.7;Juzgado Comercial Nro. 4   ;Secretaria Nro. 7   
+JCO_Nro.4_SecNro.8;Juzgado Comercial Nro. 4   ;Secretaria Nro. 8   
+JCO_Nro.5_SecNro.9;Juzgado Comercial Nro. 5   ;Secretaria Nro. 9   
+JCO_Nro.5_SecNro.10;Juzgado Comercial Nro. 5   ;Secretaria Nro. 10   
+JCO_Nro.6_SecNro.11;Juzgado Comercial Nro. 6   ;Secretaria Nro. 11   
+JCO_Nro.6_SecNro.12;Juzgado Comercial Nro. 6   ;Secretaria Nro. 12   
+JCO_Nro.7_SecNro.13;Juzgado Comercial Nro. 7   ;Secretaria Nro. 13   
+JCO_Nro.7_SecNro.14;Juzgado Comercial Nro. 7   ;Secretaria Nro. 14   
+JCO_Nro.8_SecNro.15;Juzgado Comercial Nro. 8   ;Secretaria Nro. 15   
+JCO_Nro.8_SecNro.16;Juzgado Comercial Nro. 8   ;Secretaria Nro. 16   
+JCO_Nro.9_SecNro.17;Juzgado Comercial Nro. 9   ;Secretaria Nro. 17   
+JCO_Nro.9_SecNro.18;Juzgado Comercial Nro. 9   ;Secretaria Nro. 18   
+JCO_Nro.10_SecNro.19;Juzgado Comercial Nro. 10   ;Secretaria Nro. 19   
+JCO_Nro.10_SecNro.20;Juzgado Comercial Nro. 10   ;Secretaria Nro. 20   
+JCO_Nro.10_SecNro.100;Juzgado Comercial Nro. 10   ;Secretaria Nro. 100   
+JCO_Nro.11_SecNro.21;Juzgado Comercial Nro. 11   ;Secretaria Nro. 21   
+JCO_Nro.11_SecNro.22;Juzgado Comercial Nro. 11   ;Secretaria Nro. 22   
+JCO_Nro.12_SecNro.23;Juzgado Comercial Nro. 12   ;Secretaria Nro. 23   
+JCO_Nro.12_SecNro.24;Juzgado Comercial Nro. 12   ;Secretaria Nro. 24    
+JCO_Nro.12_SecNro.120;Juzgado Comercial Nro. 12   ;Secretaria Nro. 120   
+JCO_Nro.13_SecNro.25;Juzgado Comercial Nro. 13   ;Secretaria Nro. 25   
+JCO_Nro.13_SecNro.26;Juzgado Comercial Nro. 13   ;Secretaria Nro. 26   
+JCO_Nro.14_SecNro.27;Juzgado Comercial Nro. 14    ;Secretaria Nro. 27   
+JCO_Nro.14_SecNro.28;Juzgado Comercial Nro. 14    ;Secretaria Nro. 28   
+JCO_Nro.15_SecNro.29;Juzgado Comercial Nro. 15   ;Secretaria Nro. 29   
+JCO_Nro.15_SecNro.30;Juzgado Comercial Nro. 15   ;Secretaria Nro. 30   
+JCO_Nro.16_SecNro.31;Juzgado Comercial Nro. 16   ;Secretaria Nro. 31   
+JCO_Nro.16_SecNro.32;Juzgado Comercial Nro. 16   ;Secretaria Nro. 32   
+JCO_Nro.16_SecNro.160;Juzgado Comercial Nro. 16   ;Secretaria Nro. 160   
+JCO_Nro.17_SecNro.33;Juzgado Comercial Nro. 17   ;Secretaria Nro. 33   
+JCO_Nro.17_SecNro.34;Juzgado Comercial Nro. 17   ;Secretaria Nro. 34   
+JCO_Nro.18_SecNro.35;Juzgado Comercial Nro. 18   ;Secretaria Nro. 35   
+JCO_Nro.18_SecNro.36;Juzgado Comercial Nro. 18   ;Secretaria Nro. 36   
+JCO_Nro.19_SecNro.37;Juzgado Comercial Nro. 19   ;Secretaria Nro. 37   
+JCO_Nro.19_SecNro.38;Juzgado Comercial Nro. 19   ;Secretaria Nro. 38   
+JCO_Nro.20_SecNro.39;Juzgado Comercial Nro. 20   ;Secretaria Nro. 39   
+JCO_Nro.20_SecNro.40;Juzgado Comercial Nro. 20   ;Secretaria Nro. 40   
+JCO_Nro.21_SecNro.41;Juzgado Comercial Nro. 21   ;Secretaria Nro. 41   
+JCO_Nro.21_SecNro.42;Juzgado Comercial Nro. 21   ;Secretaria Nro. 42   
+JCO_Nro.22_SecNro.43;Juzgado Comercial Nro. 22   ;Secretaria Nro. 43   
+JCO_Nro.22_SecNro.44;Juzgado Comercial Nro. 22   ;Secretaria Nro. 44   
+JCO_Nro.23_SecNro.45;Juzgado Comercial Nro. 23   ;Secretaria Nro. 45   
+JCO_Nro.23_SecNro.46;Juzgado Comercial Nro. 23   ;Secretaria Nro. 46   
+JCO_Nro.23_SecNro.230;Juzgado Comercial Nro. 23   ;Secretaria Nro. 230   
+JCO_Nro.24_SecNro.47;Juzgado Comercial Nro. 24   ;Secretaria Nro. 47   
+JCO_Nro.24_SecNro.48;Juzgado Comercial Nro. 24   ;Secretaria Nro. 48   
+JCO_Nro.24_SecNro.240;Juzgado Comercial Nro. 24   ;Secretaria Nro. 240   
+JCO_Nro.25_SecNro.49;Juzgado Comercial Nro. 25   ;Secretaria Nro. 49   
+JCO_Nro.25_SecNro.50;Juzgado Comercial Nro. 25   ;Secretaria Nro. 50    
+JCO_Nro.26_SecNro.51;Juzgado Comercial Nro. 26   ;Secretaria Nro. 51   
+JCO_Nro.26_SecNro.52;Juzgado Comercial Nro. 26   ;Secretaria Nro. 52 
+Sala_I_CNAT;Sala I - Camara del Trabajo   ;N/A
+Sala_II_CNAT;Sala II - Camara del Trabajo   ;N/A
+Sala_III_CNAT;Sala III - Camara del Trabajo   ;N/A
+Sala_IV_CNAT;Sala IV - Camara del Trabajo   ;N/A
+Sala_V_CNAT;Sala V - Camara del Trabajo   ;N/A
+Sala_VI_CNAT;Sala VI - Camara del Trabajo   ;N/A
+Sala_VII_CNAT;Sala VII - Camara del Trabajo   ;N/A
+Sala_VIII_CNAT;Sala VIII - Camara del Trabajo   ;N/A
+Sala_IX_CNAT;Sala IX - Camara del Trabajo   ;N/A
+Sala_X_CNAT;Sala X - Camara del Trabajo ;N/A
+JT_Nro.1;Juzgado del Trabajo Nro. 1;N/A
+JT_Nro.2;Juzgado del Trabajo Nro. 2;N/A
+JT_Nro.3;Juzgado del Trabajo Nro. 3;N/A
+JT_Nro.4;Juzgado del Trabajo Nro. 4;N/A
+JT_Nro.5;Juzgado del Trabajo Nro. 5;N/A
+JT_Nro.6;Juzgado del Trabajo Nro. 6;N/A
+JT_Nro.7;Juzgado del Trabajo Nro. 7;N/A
+JT_Nro.8;Juzgado del Trabajo Nro. 8;N/A
+JT_Nro.9;Juzgado del Trabajo Nro. 9;N/A
+JT_Nro.10;Juzgado del Trabajo Nro. 10;N/A
+JT_Nro.11;Juzgado del Trabajo Nro. 11;N/A
+JT_Nro.12;Juzgado del Trabajo Nro. 12;N/A
+JT_Nro.13;Juzgado del Trabajo Nro. 13;N/A
+JT_Nro.14;Juzgado del Trabajo Nro. 14;N/A
+JT_Nro.15;Juzgado del Trabajo Nro. 15;N/A
+JT_Nro.16;Juzgado del Trabajo Nro. 16;N/A
+JT_Nro.17;Juzgado del Trabajo Nro. 17;N/A
+JT_Nro.18;Juzgado del Trabajo Nro. 18;N/A
+JT_Nro.19;Juzgado del Trabajo Nro. 19;N/A
+JT_Nro.20;Juzgado del Trabajo Nro. 20;N/A
+JT_Nro.21;Juzgado del Trabajo Nro. 21;N/A
+JT_Nro.22;Juzgado del Trabajo Nro. 22;N/A
+JT_Nro.23;Juzgado del Trabajo Nro. 23;N/A
+JT_Nro.24;Juzgado del Trabajo Nro. 24;N/A
+JT_Nro.25;Juzgado del Trabajo Nro. 25;N/A
+JT_Nro.26;Juzgado del Trabajo Nro. 26;N/A
+JT_Nro.27;Juzgado del Trabajo Nro. 27;N/A
+JT_Nro.28;Juzgado del Trabajo Nro. 28;N/A
+JT_Nro.29;Juzgado del Trabajo Nro. 29;N/A
+JT_Nro.30;Juzgado del Trabajo Nro. 30;N/A
+JT_Nro.31;Juzgado del Trabajo Nro. 31;N/A
+JT_Nro.32;Juzgado del Trabajo Nro. 32;N/A
+JT_Nro.33;Juzgado del Trabajo Nro. 33;N/A
+JT_Nro.34;Juzgado del Trabajo Nro. 34;N/A
+JT_Nro.35;Juzgado del Trabajo Nro. 35;N/A
+JT_Nro.36;Juzgado del Trabajo Nro. 36;N/A
+JT_Nro.37;Juzgado del Trabajo Nro. 37;N/A
+JT_Nro.38;Juzgado del Trabajo Nro. 38;N/A
+JT_Nro.39;Juzgado del Trabajo Nro. 39;N/A
+JT_Nro.40;Juzgado del Trabajo Nro. 40;N/A
+JT_Nro.41;Juzgado del Trabajo Nro. 41;N/A
+JT_Nro.42;Juzgado del Trabajo Nro. 42;N/A
+JT_Nro.43;Juzgado del Trabajo Nro. 43;N/A
+JT_Nro.44;Juzgado del Trabajo Nro. 44;N/A
+JT_Nro.45;Juzgado del Trabajo Nro. 45;N/A
+JT_Nro.46;Juzgado del Trabajo Nro. 46;N/A
+JT_Nro.47;Juzgado del Trabajo Nro. 47;N/A
+JT_Nro.48;Juzgado del Trabajo Nro. 48;N/A
+JT_Nro.49;Juzgado del Trabajo Nro. 49;N/A
+JT_Nro.50;Juzgado del Trabajo Nro. 50;N/A
+JT_Nro.51;Juzgado del Trabajo Nro. 51;N/A
+JT_Nro.52;Juzgado del Trabajo Nro. 52;N/A
+JT_Nro.53;Juzgado del Trabajo Nro. 53;N/A
+JT_Nro.54;Juzgado del Trabajo Nro. 54;N/A
+JT_Nro.55;Juzgado del Trabajo Nro. 55;N/A
+JT_Nro.56;Juzgado del Trabajo Nro. 56;N/A
+JT_Nro.57;Juzgado del Trabajo Nro. 57;N/A
+JT_Nro.58;Juzgado del Trabajo Nro. 58;N/A
+JT_Nro.59;Juzgado del Trabajo Nro. 59;N/A
+JT_Nro.60;Juzgado del Trabajo Nro. 60;N/A
+JT_Nro.61;Juzgado del Trabajo Nro. 61;N/A
+JT_Nro.62;Juzgado del Trabajo Nro. 62;N/A
+JT_Nro.63;Juzgado del Trabajo Nro. 63;N/A
+JT_Nro.64;Juzgado del Trabajo Nro. 64;N/A
+JT_Nro.65;Juzgado del Trabajo Nro. 65;N/A
+JT_Nro.66;Juzgado del Trabajo Nro. 66;N/A
+JT_Nro.67;Juzgado del Trabajo Nro. 67;N/A
+JT_Nro.68;Juzgado del Trabajo Nro. 68;N/A
+JT_Nro.69;Juzgado del Trabajo Nro. 69;N/A
+JT_Nro.70;Juzgado del Trabajo Nro. 70;N/A
+JT_Nro.71;Juzgado del Trabajo Nro. 71;N/A
+JT_Nro.72;Juzgado del Trabajo Nro. 72;N/A
+JT_Nro.73;Juzgado del Trabajo Nro. 73;N/A
+JT_Nro.74;Juzgado del Trabajo Nro. 74;N/A
+JT_Nro.75;Juzgado del Trabajo Nro. 75;N/A
+JT_Nro.76;Juzgado del Trabajo Nro. 76;N/A
+JT_Nro.77;Juzgado del Trabajo Nro. 77;N/A
+JT_Nro.78;Juzgado del Trabajo Nro. 78;N/A
+JT_Nro.79;Juzgado del Trabajo Nro. 79;N/A
+JT_Nro.80;Juzgado del Trabajo Nro. 80;N/A
+Sala_A_Civil;Sala A - Civil   ;N/A
+Sala_B_Civil;Sala B - Civil   ;N/A
+Sala_C_Civil;Sala C - Civil   ;N/A
+Sala_D_Civil;Sala D - Civil   ;N/A
+Sala_E_Civil;Sala E - Civil   ;N/A
+Sala_F_Civil;Sala F - Civil   ;N/A
+Sala_G_Civil;Sala G - Civil   ;N/A
+Sala_H_Civil;Sala H - Civil   ;N/A
+Sala_I_Civil;Sala I - Civil   ;N/A
+Sala_J_Civil;Sala J - Civil   ;N/A
+Sala_K_Civil;Sala K - Civil   ;N/A
+Sala_L_Civil;Sala L - Civil   ;N/A
+Sala_M_Civil;Sala M - Civil   ;N/A
+JCI_Nro.1;Juzgado Civil Nro. 1   ;N/A
+JCI_Nro.2;Juzgado Civil Nro. 2   ;N/A
+JCI_Nro.3;Juzgado Civil Nro. 3   ;N/A
+JCI_Nro.4;Juzgado Civil Nro. 4   ;N/A
+JCI_Nro.5;Juzgado Civil Nro. 5   ;N/A
+JCI_Nro.6;Juzgado Civil Nro. 6   ;N/A
+JCI_Nro.7;Juzgado Civil Nro. 7   ;N/A
+JCI_Nro.8;Juzgado Civil Nro. 8   ;N/A
+JCI_Nro.9;Juzgado Civil Nro. 9   ;N/A
+JCI_Nro.10;Juzgado Civil Nro. 10   ;N/A
+JCI_Nro.11;Juzgado Civil Nro. 11   ;N/A
+JCI_Nro.12;Juzgado Civil Nro. 12   ;N/A
+JCI_Nro.13;Juzgado Civil Nro. 13   ;N/A
+JCI_Nro.14;Juzgado Civil Nro. 14   ;N/A
+JCI_Nro.15;Juzgado Civil Nro. 15   ;N/A
+JCI_Nro.16;Juzgado Civil Nro. 16   ;N/A
+JCI_Nro.17;Juzgado Civil Nro. 17   ;N/A
+JCI_Nro.18;Juzgado Civil Nro. 18   ;N/A
+JCI_Nro.19;Juzgado Civil Nro. 19   ;N/A
+JCI_Nro.20;Juzgado Civil Nro. 20   ;N/A
+JCI_Nro.21;Juzgado Civil Nro. 21   ;N/A
+JCI_Nro.22;Juzgado Civil Nro. 22   ;N/A
+JCI_Nro.23;Juzgado Civil Nro. 23   ;N/A
+JCI_Nro.24;Juzgado Civil Nro. 24   ;N/A
+JCI_Nro.25;Juzgado Civil Nro. 25   ;N/A
+JCI_Nro.26;Juzgado Civil Nro. 26   ;N/A
+JCI_Nro.27;Juzgado Civil Nro. 27   ;N/A
+JCI_Nro.28;Juzgado Civil Nro. 28   ;N/A
+JCI_Nro.29;Juzgado Civil Nro. 29   ;N/A
+JCI_Nro.30;Juzgado Civil Nro. 30   ;N/A
+JCI_Nro.31;Juzgado Civil Nro. 31   ;N/A
+JCI_Nro.32;Juzgado Civil Nro. 32   ;N/A
+JCI_Nro.33;Juzgado Civil Nro. 33   ;N/A
+JCI_Nro.34;Juzgado Civil Nro. 34   ;N/A
+JCI_Nro.35;Juzgado Civil Nro. 35   ;N/A
+JCI_Nro.36;Juzgado Civil Nro. 36   ;N/A
+JCI_Nro.37;Juzgado Civil Nro. 37   ;N/A
+JCI_Nro.38;Juzgado Civil Nro. 38   ;N/A
+JCI_Nro.39;Juzgado Civil Nro. 39   ;N/A
+JCI_Nro.40;Juzgado Civil Nro. 40   ;N/A
+JCI_Nro.41;Juzgado Civil Nro. 41   ;N/A
+JCI_Nro.42;Juzgado Civil Nro. 42   ;N/A
+JCI_Nro.43;Juzgado Civil Nro. 43   ;N/A
+JCI_Nro.44;Juzgado Civil Nro. 44   ;N/A
+JCI_Nro.45;Juzgado Civil Nro. 45   ;N/A
+JCI_Nro.46;Juzgado Civil Nro. 46   ;N/A
+JCI_Nro.47;Juzgado Civil Nro. 47   ;N/A
+JCI_Nro.48;Juzgado Civil Nro. 48   ;N/A
+JCI_Nro.49;Juzgado Civil Nro. 49   ;N/A
+JCI_Nro.50;Juzgado Civil Nro. 50   ;N/A
+JCI_Nro.51;Juzgado Civil Nro. 51   ;N/A
+JCI_Nro.52;Juzgado Civil Nro. 52   ;N/A
+JCI_Nro.53;Juzgado Civil Nro. 53   ;N/A
+JCI_Nro.54;Juzgado Civil Nro. 54   ;N/A
+JCI_Nro.55;Juzgado Civil Nro. 55   ;N/A
+JCI_Nro.56;Juzgado Civil Nro. 56   ;N/A
+JCI_Nro.57;Juzgado Civil Nro. 57   ;N/A
+JCI_Nro.58;Juzgado Civil Nro. 58   ;N/A
+JCI_Nro.59;Juzgado Civil Nro. 59   ;N/A
+JCI_Nro.60;Juzgado Civil Nro. 60   ;N/A
+JCI_Nro.61;Juzgado Civil Nro. 61   ;N/A
+JCI_Nro.62;Juzgado Civil Nro. 62   ;N/A
+JCI_Nro.63;Juzgado Civil Nro. 63   ;N/A
+JCI_Nro.64;Juzgado Civil Nro. 64   ;N/A
+JCI_Nro.65;Juzgado Civil Nro. 65   ;N/A
+JCI_Nro.66;Juzgado Civil Nro. 66   ;N/A
+JCI_Nro.67;Juzgado Civil Nro. 67   ;N/A
+JCI_Nro.68;Juzgado Civil Nro. 68   ;N/A
+JCI_Nro.69;Juzgado Civil Nro. 69   ;N/A
+JCI_Nro.70;Juzgado Civil Nro. 70   ;N/A
+JCI_Nro.71;Juzgado Civil Nro. 71   ;N/A
+JCI_Nro.72;Juzgado Civil Nro. 72   ;N/A
+JCI_Nro.73;Juzgado Civil Nro. 73   ;N/A
+JCI_Nro.74;Juzgado Civil Nro. 74   ;N/A
+JCI_Nro.75;Juzgado Civil Nro. 75   ;N/A
+JCI_Nro.76;Juzgado Civil Nro. 76   ;N/A
+JCI_Nro.77;Juzgado Civil Nro. 77   ;N/A
+JCI_Nro.78;Juzgado Civil Nro. 78   ;N/A
+JCI_Nro.79;Juzgado Civil Nro. 79   ;N/A
+JCI_Nro.80;Juzgado Civil Nro. 80   ;N/A
+JCI_Nro.81;Juzgado Civil Nro. 81   ;N/A
+JCI_Nro.82;Juzgado Civil Nro. 82   ;N/A
+JCI_Nro.83;Juzgado Civil Nro. 83   ;N/A
+JCI_Nro.84;Juzgado Civil Nro. 84   ;N/A
+JCI_Nro.85;Juzgado Civil Nro. 85   ;N/A
+JCI_Nro.86;Juzgado Civil Nro. 86   ;N/A
+JCI_Nro.87;Juzgado Civil Nro. 87   ;N/A
+JCI_Nro.88;Juzgado Civil Nro. 88   ;N/A
+JCI_Nro.89;Juzgado Civil Nro. 89   ;N/A
+JCI_Nro.90;Juzgado Civil Nro. 90   ;N/A
+JCI_Nro.91;Juzgado Civil Nro. 91   ;N/A
+JCI_Nro.92;Juzgado Civil Nro. 92   ;N/A
+JCI_Nro.93;Juzgado Civil Nro. 93   ;N/A
+JCI_Nro.94;Juzgado Civil Nro. 94   ;N/A
+JCI_Nro.95;Juzgado Civil Nro. 95   ;N/A
+JCI_Nro.96;Juzgado Civil Nro. 96   ;N/A
+JCI_Nro.97;Juzgado Civil Nro. 97   ;N/A
+JCI_Nro.98;Juzgado Civil Nro. 98   ;N/A
+JCI_Nro.99;Juzgado Civil Nro. 99   ;N/A
+JCI_Nro.100;Juzgado Civil Nro. 100   ;N/A
+JCI_Nro.101;Juzgado Civil Nro. 101   ;N/A
+JCI_Nro.102;Juzgado Civil Nro. 102   ;N/A
+JCI_Nro.103;Juzgado Civil Nro. 103   ;N/A
+JCI_Nro.104;Juzgado Civil Nro. 104   ;N/A
+JCI_Nro.105;Juzgado Civil Nro. 105   ;N/A
+JCI_Nro.106;Juzgado Civil Nro. 106   ;N/A
+JCI_Nro.107;Juzgado Civil Nro. 107   ;N/A
+JCI_Nro.108;Juzgado Civil Nro. 108   ;N/A
+JCI_Nro.109;Juzgado Civil Nro. 109   ;N/A
+JCI_Nro.110;Juzgado Civil Nro. 110   ;N/A
+Sala_I_ad-hoc-AMIA;Sala I - ad -hoc- AMIA   ;N/A
+Sala_I_CyC;Sala I - Criminal y Correccional   ;N/A
+Sala_IV_CyC;Sala IV - Criminal y Correccional   ;N/A
+Sala_V_CyC;Sala V - Criminal y Correccional   ;N/A
+Sala_VI_CyC;Sala VI - Criminal y Correccional   ;N/A
+Sala_VII_CyC;Sala VII - Criminal y Correccional ;N/A
+JCri_Nro.1_SecNro.105;Juzgado Criminal de Instruccion Nro. 1   ;Secretaria Nro. 105   
+JCri_Nro.2_SecNro.107;Juzgado Criminal de Instruccion Nro. 2   ;Secretaria Nro. 107   
+JCri_Nro.3_SecNro.110;Juzgado Criminal de Instruccion Nro. 3   ;Secretaria Nro. 110   
+JCri_Nro.4_SecNro.113;Juzgado Criminal de Instruccion Nro. 4   ;Secretaria Nro. 113   
+JCri_Nro.5_SecNro.116;Juzgado Criminal de Instruccion Nro. 5   ;Secretaria Nro. 116   
+JCri_Nro.6_SecNro.118;Juzgado Criminal de Instruccion Nro. 6   ;Secretaria Nro. 118   
+JCri_Nro.7_SecNro.121;Juzgado Criminal de Instruccion Nro. 7   ;Secretaria Nro. 121   
+JCri_Nro.8_SecNro.125;Juzgado Criminal de Instruccion Nro. 8   ;Secretaria Nro. 125   
+JCri_Nro.9_SecNro.108;Juzgado Criminal de Instruccion Nro. 9   ;Secretaria Nro. 108   
+JCri_Nro.10_SecNro.130;Juzgado Criminal de Instruccion Nro. 10   ;Secretaria Nro. 130   
+JCri_Nro.11_SecNro.133;Juzgado Criminal de Instruccion Nro. 11   ;Secretaria Nro. 133   
+JCri_Nro.12_SecNro.137;Juzgado Criminal de Instruccion Nro. 12   ;Secretaria Nro. 137   
+JCri_Nro.13_SecNro.140;Juzgado Criminal de Instruccion Nro. 13   ;Secretaria Nro. 140   
+JCri_Nro.14_SecNro.143;Juzgado Criminal de Instruccion Nro. 14   ;Secretaria Nro. 143   
+JCri_Nro.15_SecNro.146;Juzgado Criminal de Instruccion Nro. 15   ;Secretaria Nro. 146   
+JCri_Nro.16_SecNro.111;Juzgado Criminal de Instruccion Nro. 16   ;Secretaria Nro. 111   
+JCri_Nro.17_SecNro.153;Juzgado Criminal de Instruccion Nro. 17   ;Secretaria Nro. 153   
+JCri_Nro.18_SecNro.156;Juzgado Criminal de Instruccion Nro. 18   ;Secretaria Nro. 156   
+JCri_Nro.19_SecNro.159;Juzgado Criminal de Instruccion Nro. 19   ;Secretaria Nro. 159   
+JCri_Nro.20_SecNro.162;Juzgado Criminal de Instruccion Nro. 20   ;Secretaria Nro. 162   
+JCri_Nro.21_SecNro.165;Juzgado Criminal de Instruccion Nro. 21   ;Secretaria Nro. 165   
+JCri_Nro.22_SecNro.148;Juzgado Criminal de Instruccion Nro. 22   ;Secretaria Nro. 148   
+JCri_Nro.23_SecNro.158;Juzgado Criminal de Instruccion Nro. 23   ;Secretaria Nro. 158   
+JCri_Nro.24_SecNro.131;Juzgado Criminal de Instruccion Nro. 24   ;Secretaria Nro. 131   
+JCri_Nro.25_SecNro.161;Juzgado Criminal de Instruccion Nro. 25   ;Secretaria Nro. 161   
+JCri_Nro.26_SecNro.155;Juzgado Criminal de Instruccion Nro. 26   ;Secretaria Nro. 155   
+JCri_Nro.27_SecNro.124;Juzgado Criminal de Instruccion Nro. 27   ;Secretaria Nro. 124   
+JCri_Nro.28_SecNro.142;Juzgado Criminal de Instruccion Nro. 28   ;Secretaria Nro. 142   
+JCri_Nro.29_SecNro.152;Juzgado Criminal de Instruccion Nro. 29   ;Secretaria Nro. 152   
+JCri_Nro.30_SecNro.164;Juzgado Criminal de Instruccion Nro. 30   ;Secretaria Nro. 164   
+JCri_Nro.31_SecNro.119;Juzgado Criminal de Instruccion Nro. 31   ;Secretaria Nro. 119   
+JCri_Nro.32_SecNro.114;Juzgado Criminal de Instruccion Nro. 32   ;Secretaria Nro. 114   
+JCri_Nro.33_SecNro.170;Juzgado Criminal de Instruccion Nro. 33   ;Secretaria Nro. 170   
+JCri_Nro.34_SecNro.117;Juzgado Criminal de Instruccion Nro. 34   ;Secretaria Nro. 117   
+JCri_Nro.35_SecNro.120;Juzgado Criminal de Instruccion Nro. 35   ;Secretaria Nro. 120   
+JCri_Nro.36_SecNro.123;Juzgado Criminal de Instruccion Nro. 36   ;Secretaria Nro. 123   
+JCri_Nro.37_SecNro.129;Juzgado Criminal de Instruccion Nro. 37   ;Secretaria Nro. 129   
+JCri_Nro.38_SecNro.132;Juzgado Criminal de Instruccion Nro. 38   ;Secretaria Nro. 132   
+JCri_Nro.39_SecNro.135;Juzgado Criminal de Instruccion Nro. 39   ;Secretaria Nro. 135   
+JCri_Nro.40_SecNro.139;Juzgado Criminal de Instruccion Nro. 40   ;Secretaria Nro. 139   
+JCri_Nro.41_SecNro.112;Juzgado Criminal de Instruccion Nro. 41   ;Secretaria Nro. 112   
+JCri_Nro.42_SecNro.106;Juzgado Criminal de Instruccion Nro. 42   ;Secretaria Nro. 106   
+JCri_Nro.43_SecNro.109;Juzgado Criminal de Instruccion Nro. 43   ;Secretaria Nro. 109   
+JCri_Nro.44_SecNro.115;Juzgado Criminal de Instruccion Nro. 44   ;Secretaria Nro. 115   
+JCri_Nro.45_SecNro.122;Juzgado Criminal de Instruccion Nro. 45   ;Secretaria Nro. 122   
+JCri_Nro.46_SecNro.134;Juzgado Criminal de Instruccion Nro. 46   ;Secretaria Nro. 134   
+JCri_Nro.47_SecNro.136;Juzgado Criminal de Instruccion Nro. 47   ;Secretaria Nro. 136   
+JCri_Nro.48_SecNro.145;Juzgado Criminal de Instruccion Nro. 48   ;Secretaria Nro. 145
+JCri_Nro.49_SecNro.169;Juzgado Criminal de Instruccion Nro. 49   ;Secretaria Nro. 169   
+JCri_Nro.49_SecNro.207;Juzgado Criminal de Instruccion Nro. 49   ;Secretaria Nro. 207 
+JN_Rogatorias;Juzgado Nacional de Rogatorias ;N/A
+JCorr_Nro.1_SecNro.51;Juzgado Correccional Nro. 1;Secretaria Nro. 51 
+JCorr_Nro.1_SecNro.52;Juzgado Correccional Nro. 1;Secretaria Nro. 52
+JCorr_Nro.2_SecNro.58;Juzgado Correccional Nro. 2;Secretaria Nro. 58
+JCorr_Nro.2_SecNro.59;Juzgado Correccional Nro. 2;Secretaria Nro. 59
+JCorr_Nro.3_SecNro.60;Juzgado Correccional Nro. 3;Secretaria Nro. 60
+JCorr_Nro.3_SecNro.62;Juzgado Correccional Nro. 3;Secretaria Nro. 62
+JCorr_Nro.4_SecNro.66;Juzgado Correccional Nro. 4;Secretaria Nro. 66
+JCorr_Nro.4_SecNro.67;Juzgado Correccional Nro. 4;Secretaria Nro. 67
+JCorr_Nro.5_SecNro.73;Juzgado Correccional Nro. 5;Secretaria Nro. 73
+JCorr_Nro.5_SecNro.75;Juzgado Correccional Nro. 5;Secretaria Nro. 75
+JCorr_Nro.6_SecNro.55;Juzgado Correccional Nro. 6;Secretaria Nro. 55
+JCorr_Nro.6_SecNro.101;Juzgado Correccional Nro. 6;Secretaria Nro. 101
+JCorr_Nro.7_SecNro.56;Juzgado Correccional Nro. 7;Secretaria Nro. 56
+JCorr_Nro.7_SecNro.57;Juzgado Correccional Nro. 7;Secretaria Nro. 57
+JCorr_Nro.8_SecNro.61;Juzgado Correccional Nro. 8;Secretaria Nro. 61
+JCorr_Nro.8_SecNro.63;Juzgado Correccional Nro. 8;Secretaria Nro. 63
+JCorr_Nro.9_SecNro.64;Juzgado Correccional Nro. 9;Secretaria Nro. 64
+JCorr_Nro.9_SecNro.65;Juzgado Correccional Nro. 9;Secretaria Nro. 65
+JCorr_Nro.10_SecNro.74;Juzgado Correccional Nro. 10;Secretaria Nro. 74
+JCorr_Nro.10_SecNro.76;Juzgado Correccional Nro. 10;Secretaria Nro. 76
+JCorr_Nro.11_SecNro.71;Juzgado Correccional Nro. 11;Secretaria Nro. 71
+JCorr_Nro.11_SecNro.72;Juzgado Correccional Nro. 11;Secretaria Nro. 72
+JCorr_Nro.12_SecNro.77;Juzgado Correccional Nro. 12;Secretaria Nro. 77
+JCorr_Nro.12_SecNro.78;Juzgado Correccional Nro. 12;Secretaria Nro. 78
+JCorr_Nro.13_SecNro.79;Juzgado Correccional Nro. 13;Secretaria Nro. 79
+JCorr_Nro.13_SecNro.80;Juzgado Correccional Nro. 13;Secretaria Nro. 80
+JCorr_Nro.14_SecNro.81;Juzgado Correccional Nro. 14;Secretaria Nro. 81
+JCorr_Nro.14_SecNro.82;Juzgado Correccional Nro. 14;Secretaria Nro. 82
+JMe_Nro.1_SecNro.1;Juzgado de Menores Nro. 1;Secretaria Nro. 1
+JMe_Nro.1_SecNro.2;Juzgado de Menores Nro. 1;Secretaria Nro. 2
+JMe_Nro.1_SecNro.3;Juzgado de Menores Nro. 1;Secretaria Nro. 3
+JMe_Nro.2_SecNro.4;Juzgado de Menores Nro. 2;Secretaria Nro. 4
+JMe_Nro.2_SecNro.5;Juzgado de Menores Nro. 2;Secretaria Nro. 5
+JMe_Nro.2_SecNro.6;Juzgado de Menores Nro. 2;Secretaria Nro. 6
+JMe_Nro.3_SecNro.7;Juzgado de Menores Nro. 3;Secretaria Nro. 7
+JMe_Nro.3_SecNro.8;Juzgado de Menores Nro. 3;Secretaria Nro. 8
+JMe_Nro.3_SecNro.9;Juzgado de Menores Nro. 3;Secretaria Nro. 9
+JMe_Nro.4_SecNro.10;Juzgado de Menores Nro. 4;Secretaria Nro. 10
+JMe_Nro.4_SecNro.11;Juzgado de Menores Nro. 4;Secretaria Nro. 11
+JMe_Nro.4_SecNro.12;Juzgado de Menores Nro. 4;Secretaria Nro. 12
+JMe_Nro.5_SecNro.13;Juzgado de Menores Nro. 5;Secretaria Nro. 13
+JMe_Nro.5_SecNro.14;Juzgado de Menores Nro. 5;Secretaria Nro. 14
+JMe_Nro.5_SecNro.15;Juzgado de Menores Nro. 5;Secretaria Nro. 15
+JMe_Nro.6_SecNro.16;Juzgado de Menores Nro. 6;Secretaria Nro. 16
+JMe_Nro.6_SecNro.17;Juzgado de Menores Nro. 6;Secretaria Nro. 17
+JMe_Nro.6_SecNro.18;Juzgado de Menores Nro. 6;Secretaria Nro. 18
+JMe_Nro.7_SecNro.19;Juzgado de Menores Nro. 7;Secretaria Nro. 19
+JMe_Nro.7_SecNro.20;Juzgado de Menores Nro. 7;Secretaria Nro. 20
+JMe_Nro.7_SecNro.21;Juzgado de Menores Nro. 7;Secretaria Nro. 21
+TOM_Nro.1_CP;Tribunal Oral de Menores Nro. 1 de la Capital Federal;N/A
+TOM_Nro.2_CP;Tribunal Oral de Menores Nro. 2 de la Capital Federal;N/A
+TOM_Nro.3_CP;Tribunal Oral de Menores Nro. 3 de la Capital Federal;N/A
+TOCri_Nro.1 _CP;Tribunal Oral en lo Criminal Nro. 1  de la Capital Federal;N/A
+TOCri_Nro.2_CP;Tribunal Oral en lo Criminal Nro. 2 de la Capital Federal;N/A
+TOCri_Nro.3_CP;Tribunal Oral en lo Criminal Nro. 3 de la Capital Federal;N/A
+TOCri_Nro.4_CP;Tribunal Oral en lo Criminal Nro. 4 de la Capital Federal;N/A
+TOCri_Nro.5_CP;Tribunal Oral en lo Criminal Nro. 5 de la Capital Federal;N/A
+TOCri_Nro.6_CP;Tribunal Oral en lo Criminal Nro. 6 de la Capital Federal;N/A
+TOCri_Nro.7_CP;Tribunal Oral en lo Criminal Nro. 7 de la Capital Federal;N/A
+TOCri_Nro.8_CP;Tribunal Oral en lo Criminal Nro. 8 de la Capital Federal;N/A
+TOCri_Nro.9_CP;Tribunal Oral en lo Criminal Nro. 9 de la Capital Federal;N/A
+TOCri_Nro.10_CP;Tribunal Oral en lo Criminal Nro. 10 de la Capital Federal;N/A
+TOCri_Nro.11_CP;Tribunal Oral en lo Criminal Nro. 11 de la Capital Federal;N/A
+TOCri_Nro.12_CP;Tribunal Oral en lo Criminal Nro. 12 de la Capital Federal;N/A
+TOCri_Nro.13_CP;Tribunal Oral en lo Criminal Nro. 13 de la Capital Federal;N/A
+TOCri_Nro.14_CP;Tribunal Oral en lo Criminal Nro. 14 de la Capital Federal;N/A
+TOCri_Nro.15_CP;Tribunal Oral en lo Criminal Nro. 15 de la Capital Federal;N/A
+TOCri_Nro.16_CP;Tribunal Oral en lo Criminal Nro. 16 de la Capital Federal;N/A
+TOCri_Nro.17_CP;Tribunal Oral en lo Criminal Nro. 17 de la Capital Federal;N/A
+TOCri_Nro.18_CP;Tribunal Oral en lo Criminal Nro. 18 de la Capital Federal;N/A
+TOCri_Nro.19_CP;Tribunal Oral en lo Criminal Nro. 19 de la Capital Federal;N/A
+TOCri_Nro.20_CP;Tribunal Oral en lo Criminal Nro. 20 de la Capital Federal;N/A
+TOCri_Nro.21_CP;Tribunal Oral en lo Criminal Nro. 21 de la Capital Federal;N/A
+TOCri_Nro.22_CP;Tribunal Oral en lo Criminal Nro. 22 de la Capital Federal;N/A
+TOCri_Nro.23_CP;Tribunal Oral en lo Criminal Nro. 23 de la Capital Federal;N/A
+TOCri_Nro.24_CP;Tribunal Oral en lo Criminal Nro. 24 de la Capital Federal;N/A
+TOCri_Nro.25_CP;Tribunal Oral en lo Criminal Nro. 25 de la Capital Federal;N/A
+TOCri_Nro.26_CP;Tribunal Oral en lo Criminal Nro. 26 de la Capital Federal;N/A
+TOCri_Nro.27_CP;Tribunal Oral en lo Criminal Nro. 27 de la Capital Federal;N/A
+TOCri_Nro.28_CP;Tribunal Oral en lo Criminal Nro. 28 de la Capital Federal;N/A
+TOCri_Nro.29_CP;Tribunal Oral en lo Criminal Nro. 29 de la Capital Federal;N/A
+TOCri_Nro.30_CP;Tribunal Oral en lo Criminal Nro. 30 de la Capital Federal;N/A
