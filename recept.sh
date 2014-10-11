@@ -1,4 +1,3 @@
-#funcion para chequear que fue inicializado el ambiente
 function check_environment(){
 
 	#chequeo directorio maestro
@@ -31,29 +30,57 @@ function check_environment(){
 
 
 #chequea si hay archivos con actualizaciones para bancos, si hay los mueve a aceptados
-function check_bank_updates(){
-  cantfiles=`ls "$NOVEDIR" | grep -c '^[A-Z]*_[0-9]\{8\}$'`
+function check_updates(){
+  cantfiles=`ls -1 "$NOVEDIR" | wc -l`
   if [ $cantfiles -gt 0 ]; then
 	echo "hay $cantfiles archivos"
-	for f in `ls "$NOVEDIR" | grep '^[A-Z]*_[0-9]\{8\}$'`
+	IFS=$'\n'
+	for f in `ls -1 "$NOVEDIR"`
 	do
-		check_valid_bank_file $f
-		valid_bank=$?
-		#if [ $valid_bank -eq 0 ]; then
-		#	echo "es valido"
-		#else
-		 #	echo "es invalido"
-		#fi
+		echo $f
+		reject_file=false
+		#cheuqueo si el nombre del archivo podria ser de un banco
+		if [ `echo $f | grep -c "^[A-Z]*_[0-9]\{8\}$"` -gt 0 ]; then
+			echo "posiblemente sea un archivo de banco"
+			reject_file=false
+			#	check_valid_bank_file $f
+			#	valid_bank=$?
+			#if [ $valid_bank -eq 0 ]; then
+			#	echo "es valido"
+			#else
+			 #	echo "es invalido"
+			#fi
+		elif [ `echo $f | grep -c "^[^@]*@[a-zA-Z\.\_0-9]*$"` -gt 0 ]; then
+			#chequeo si el nombre del archivo podria ser de expedientes
+			echo "posiblemente sea un archivo de expedientes"
+			check_valid_records_file $f
+			check_response=$?
+			if [ $check_response -gt 0 ];then
+			   reject_file=true
+			   log_rejected_file $check_response $f
+			fi
+		fi
+		
+
+		if [ $reject_file == false ]; then
+			echo -e "no lo muevo\n"
+		else
+			echo -e "lo muevo a rechazados\n"
+		fi
 	done 
   else
 	echo "no hay archivos"
   fi 
 }
 
+
+############################## FUNCIONES PARA VALIDAR ARCHIVOS DE BANCOS #####################################################
+
 function check_valid_bank_file(){
+  #chequeo si 
   #chequeo si el banco existe en el archivo maestro
-  bank=`echo $1 | sed 's-^\([A-Z]*\)_[0-9]*$-\1-'`
-  result=`grep "$bank" "$MAEDIR/bancos.dat"`
+  #bank=`echo $1 | sed 's-^\([A-Z]*\)_[0-9]*$-\1-'`
+  #result=`grep "$bank" "$MAEDIR/bancos.dat"`
   #if [ "$result" = "" ]; then
   #	return 1
   #fi
@@ -61,7 +88,7 @@ function check_valid_bank_file(){
   fileDate=`echo $1 | sed 's-^[A-Z]*_\([0-9]*\)$-\1-'`	
   #echo $fileDate
   #check_bank_file_date $fileDate
-  is_a_valid_file $1
+  #is_a_valid_file $1
 }
 
 
@@ -80,8 +107,7 @@ function check_bank_file_date(){
   dateNow=`date "+%Y%m%d"`
   dateNow=`date --date="$dateNow" "+%s"`
   
-  fileDate=`date --date="$1" "+%s"
-`
+  fileDate=`date --date="$1" "+%s"`
   if [ $fileDate -gt $dateNow ]; then
 	echo -e "fecha de archivo mayor a ahora\n"
 	return 1
@@ -101,10 +127,81 @@ function check_bank_file_date(){
 
 
 #chequea que el archivo sea de texto
-is_a_valid_file(){
-   echo "archivo actual: $1"
-   fileType=`file "$NOVEDIR/$1"`
+function is_a_valid_file(){
+   #echo "archivo actual: $1"
+   fileType=`file "$NOVEDIR/$1" | sed 's-[^\:]*\:\(.*\)$-\1-'`
    echo "tipo del archivo $fileType"
+   
+   #chequeo si es un archivo de texto
+   echo $fileType | grep -qi "ascii text"
+   
+   if [ $? -eq 0 ];  then
+	#echo "es un archivo de ascii texto"
+	return 0
+   fi
+
+   echo $fileType | grep -qi "ISO-8859 text"
+    if [ $? -eq 0 ];  then
+	#echo "es un archivo de iso texto"
+	return 0
+   fi
+
+
+   #chequeo si es un archivo vacio
+   echo $fileType | grep -q "empty"
+   if [ $? == 0 ]; then
+	#echo "el archivo esta vacio"
+	return 2
+   fi
+
+   #es de cualquier otro tipo
+   #echo "el tipo del archivo es invalido ($fileType )"
+   return 1
+}
+
+############################## !FUNCIONES PARA VALIDAR ARCHIVOS DE BANCOS #####################################################
+
+
+
+
+############################# FUNCIONES PARA VALIDAR ARCHIVOS DE EXPEDIENTES ##################################################
+
+function check_valid_records_file(){
+    ## chequeo que la camara exista en el maestro de camaras
+    chamber=`echo $1 | sed 's-^\([^@]*\)@[a-zA-Z\.\_0-9]*$-\1-'`
+    #echo "camara $chamber"
+    if [ `grep -wc $chamber "$MAEDIR/camaras.dat"` -eq 0 ]; then
+	echo  "la camara no existe"
+    	return 1
+    fi
+    ## chequeo que el tribunal exista en el maestro
+    court=`echo $1 | sed 's-^[^@]*@\([a-zA-Z\.\_0-9]*\)$-\1-'`
+    echo $court
+    if [ `grep -wc $court "$MAEDIR/pjn.dat"` -eq 0 ]; then
+	echo "el tribunal no existe"
+	return 1
+    fi
+
+    # chequeo que el archivo sea valido
+    is_a_valid_file $f
+    return $?
+}
+
+
+############################# !FUNCIONES PARA VALIDAR ARCHIVOS DE EXPEDIENTES ##################################################
+
+#logea el tipo de error del archivo en logs
+# primer parametro: error_code
+# segundo parametro: nombre del archivo
+function log_rejected_file(){
+	reason=""
+	case "$1" in 
+		1) reason="Tipo de archivo invalido." ;;
+		
+		2) reason="Archivo vacio." ;;
+	esac  
+	
+	log_data "Archivo Rechazado: $2. Motivo: $reason"
 }
 
 
@@ -117,4 +214,5 @@ function log_data(){
 check_environment
 
 #cheuqeo si hay archivos de bancos para actualizar
-check_bank_updates
+check_updates
+
