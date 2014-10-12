@@ -33,43 +33,57 @@ function check_environment(){
 function check_updates(){
   cantfiles=`ls -1 "$NOVEDIR" | wc -l`
   if [ $cantfiles -gt 0 ]; then
-	echo "hay $cantfiles archivos"
+	#echo "hay $cantfiles archivos"
 	IFS=$'\n'
 	for f in `ls -1 "$NOVEDIR"`
 	do
 		echo $f
 		reject_file=false
+		file_type=0
 		#cheuqueo si el nombre del archivo podria ser de un banco
 		if [ `echo $f | grep -c "^[A-Z]*_[0-9]\{8\}$"` -gt 0 ]; then
-			echo "posiblemente sea un archivo de banco"
-			reject_file=false
-			#	check_valid_bank_file $f
-			#	valid_bank=$?
-			#if [ $valid_bank -eq 0 ]; then
-			#	echo "es valido"
-			#else
-			 #	echo "es invalido"
-			#fi
+			#echo "posiblemente sea un archivo de banco"
+			check_valid_bank_file $f
+			valid_bank_file=$?
+			if [ $valid_bank_file -gt 0 ]; then
+			    reject_file=true
+			    log_rejected_file $valid_bank_file $f
+			fi
+			#cambio el tipo de archivo a 1 para saber que es del tipo saldos
+			file_type=1
 		elif [ `echo $f | grep -c "^[^@]*@[a-zA-Z\.\_0-9]*$"` -gt 0 ]; then
 			#chequeo si el nombre del archivo podria ser de expedientes
-			echo "posiblemente sea un archivo de expedientes"
+			#echo "posiblemente sea un archivo de expedientes"
 			check_valid_records_file $f
 			check_response=$?
 			if [ $check_response -gt 0 ];then
 			   reject_file=true
 			   log_rejected_file $check_response $f
 			fi
+			#cambio el tipo de archivo a 2 para saber que es un archivo de expedientes
+			file_type=2
+		else
+		   #el archivo es invalido por su nombre
+		   reject_file=true
+		   log_rejected_file 9 $f
 		fi
 		
 
 		if [ $reject_file == false ]; then
-			echo -e "no lo muevo\n"
+			#lo muevo a aceptados y logueo
+			mv "$NOVEDIR/$f" "$ACEPDIR/$f"
+			if [ $file_type -eq 1 ]; then
+				log_data "Archivo de Saldos aceptado: $f"
+			elif [ $file_type -eq 2 ]; then
+				log_data "Archivo de Expedientes aceptado: $f"
+			fi
 		else
-			echo -e "lo muevo a rechazados\n"
-		fi
+			#lo muevo a la carpeta de rechazados
+			mv "$NOVEDIR/$f" "$RECHDIR/$f"
+		fi	
 	done 
   else
-	echo "no hay archivos"
+	log_data "No hay archivos de novedades"
   fi 
 }
 
@@ -77,18 +91,24 @@ function check_updates(){
 ############################## FUNCIONES PARA VALIDAR ARCHIVOS DE BANCOS #####################################################
 
 function check_valid_bank_file(){
-  #chequeo si 
+  #chequeo si es un archivo de texto
+  is_a_valid_file $1
+  bank_valid_file=$?
+  if [ $bank_valid_file -gt 0 ]; then
+	return $bank_valid_file	
+  fi
+
   #chequeo si el banco existe en el archivo maestro
-  #bank=`echo $1 | sed 's-^\([A-Z]*\)_[0-9]*$-\1-'`
-  #result=`grep "$bank" "$MAEDIR/bancos.dat"`
-  #if [ "$result" = "" ]; then
-  #	return 1
-  #fi
+  bank=`echo $1 | sed 's-^\([A-Z]*\)_[0-9]*$-\1-'`
+  bank_exists_in_master=`grep -wc "$bank" "$MAEDIR/bancos.dat"`
+  if [ $bank_exists_in_master -eq 0 ]; then
+  	return 5
+  fi
   #chequeo la fecha del archivo  
   fileDate=`echo $1 | sed 's-^[A-Z]*_\([0-9]*\)$-\1-'`	
   #echo $fileDate
-  #check_bank_file_date $fileDate
-  #is_a_valid_file $1
+  check_bank_file_date $fileDate
+  return $?
 }
 
 
@@ -98,8 +118,8 @@ function check_bank_file_date(){
   date "+%Y%m%d" -d "$1" 2>1 > /dev/null
   dateResult=$?
   if [ ! $dateResult -eq 0 ]; then
- 	echo -e "fecha invalida\n"
-  	return 1
+ 	#echo -e "fecha invalida\n"
+  	return 6
   fi 
   #chequeo el rango de las fechas
   
@@ -109,18 +129,18 @@ function check_bank_file_date(){
   
   fileDate=`date --date="$1" "+%s"`
   if [ $fileDate -gt $dateNow ]; then
-	echo -e "fecha de archivo mayor a ahora\n"
-	return 1
+	#echo -e "fecha de archivo mayor a ahora\n"
+	return 7
   fi
  
   dateAMonthAgo=`expr $dateNow - \( 30 \* 24 \* 60 \* 60 \)`   
   #echo -e "fecha hace un mes $dateAMonthAgo\n"
   
   if [ $fileDate -lt $dateAMonthAgo ]; then
-	echo "fecha del archivo demasiado vieja"
-	return 1
+	#echo "fecha del archivo demasiado vieja"
+	return 8
   else
-	echo "la fecha esta bien"
+	#echo "la fecha esta bien"
  	return 0
   fi
 }
@@ -130,7 +150,7 @@ function check_bank_file_date(){
 function is_a_valid_file(){
    #echo "archivo actual: $1"
    fileType=`file "$NOVEDIR/$1" | sed 's-[^\:]*\:\(.*\)$-\1-'`
-   echo "tipo del archivo $fileType"
+   # echo "tipo del archivo $fileType"
    
    #chequeo si es un archivo de texto
    echo $fileType | grep -qi "ascii text"
@@ -167,24 +187,29 @@ function is_a_valid_file(){
 ############################# FUNCIONES PARA VALIDAR ARCHIVOS DE EXPEDIENTES ##################################################
 
 function check_valid_records_file(){
+    # chequeo que el archivo sea valido
+    is_a_valid_file $f
+    response_valid_file=$?
+    if [ $response_valid_file -gt 0 ]; then
+	return $response_valid_file
+    fi
+
     ## chequeo que la camara exista en el maestro de camaras
     chamber=`echo $1 | sed 's-^\([^@]*\)@[a-zA-Z\.\_0-9]*$-\1-'`
     #echo "camara $chamber"
     if [ `grep -wc $chamber "$MAEDIR/camaras.dat"` -eq 0 ]; then
-	echo  "la camara no existe"
-    	return 1
+	#echo  "la camara no existe"
+    	return 3
     fi
     ## chequeo que el tribunal exista en el maestro
     court=`echo $1 | sed 's-^[^@]*@\([a-zA-Z\.\_0-9]*\)$-\1-'`
     echo $court
     if [ `grep -wc $court "$MAEDIR/pjn.dat"` -eq 0 ]; then
-	echo "el tribunal no existe"
-	return 1
+	#echo "el tribunal no existe"
+	return 4
     fi
 
-    # chequeo que el archivo sea valido
-    is_a_valid_file $f
-    return $?
+    return 0
 }
 
 
@@ -199,6 +224,20 @@ function log_rejected_file(){
 		1) reason="Tipo de archivo invalido." ;;
 		
 		2) reason="Archivo vacio." ;;
+
+		3) reason="Cámara inexistente." ;;
+		
+		4) reason="Tribunal inexistente." ;;
+	
+		5) reason="Entidad inexistente." ;;
+
+		6) reason="Fecha invalida." ;;
+	
+		7) reason="La fecha del archivo es mayor a hoy." ;;
+
+		8) reason="La fecha del archivo es muy vieja." ;;
+
+		9) reason="El nombre del archivo es invalido" ;; 
 	esac  
 	
 	log_data "Archivo Rechazado: $2. Motivo: $reason"
@@ -211,8 +250,33 @@ function log_data(){
 	echo $1 >> "$LOGDIR/recept.log"
 }
 
+
+######################## FIN FUNCIONES #############################
+
 check_environment
 
-#cheuqeo si hay archivos de bancos para actualizar
+
+process_pid=0
+while true ; do
+#chequeo si hay archivos de bancos o de expedientes para actualizar
 check_updates
 
+#si hay archivos de bancos aceptados y no hay procesos corriendo corro fsoldes
+if [ `ls -1 "$ACEPDIR" | grep -c "^[A-Z]*_[0-9]\{8\}"` -gt 0 ]; then
+	echo "hay archivos de bancos"
+	if [ $process_pid -eq 0 ] || [ `ps -p "$process_pid" | grep -wc "$proccess_pid"` -gt 0 ]; then
+		#echo "no hay procesos corriendo"
+		#corro fsoldes
+		./mock_fsoldes.sh &
+		process_pid=$!
+		log_data "FSOLDES corriendo bajo el número: $process_pid"
+	else	
+		#echo "hay un proceso corriendo"
+		log_data "Invocacion de FSOLDES pospuesta para el siguiente ciclo" 
+	fi	
+fi
+
+
+echo -e "\n\n" >> "$LOGDIR/recept.log"
+sleep 5
+done
