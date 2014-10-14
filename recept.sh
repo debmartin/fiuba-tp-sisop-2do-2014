@@ -257,14 +257,22 @@ check_environment
 
 
 process_pid=0
+process_running=0
 while true ; do
 #chequeo si hay archivos de bancos o de expedientes para actualizar
 check_updates
 
+#echo $process_pid
 #si hay archivos de bancos aceptados y no hay procesos corriendo corro fsoldes
 if [ `ls -1 "$ACEPDIR" | grep -c "^[A-Z]*_[0-9]\{8\}"` -gt 0 ]; then
-	echo "hay archivos de bancos"
-	if [ $process_pid -eq 0 ] || [ `ps -p "$process_pid" | grep -wc "$proccess_pid"` -gt 0 ]; then
+	#echo "hay archivos de bancos"
+	#echo `ps -p $process_pid`
+	if [ $process_pid -gt 0 ]; then
+	   	process_running=`ps -p "$process_pid" | grep -wc "$process_pid"`
+	fi
+	
+	#echo $process_running
+	if [ $process_pid -eq 0 ] || [ $process_running -eq 0 ]; then
 		#echo "no hay procesos corriendo"
 		#corro fsoldes
 		./mock_fsoldes.sh &
@@ -274,9 +282,39 @@ if [ `ls -1 "$ACEPDIR" | grep -c "^[A-Z]*_[0-9]\{8\}"` -gt 0 ]; then
 		#echo "hay un proceso corriendo"
 		log_data "Invocacion de FSOLDES pospuesta para el siguiente ciclo" 
 	fi	
+else
+	log_data "No hay archivos de bancos para procesar."
+
+fi
+
+#si hay archivos de expedientes aceptados y no hay procesos corriendo ejecuto cdossier
+
+###### FALTA CAMBIAR TODO PARA QUE TOME LOS EXPEDIENTES ######################
+if [ `ls -1 "$ACEPDIR" | grep -c "^[A-Z]*_[0-9]\{8\}"` -gt 0 ]; then
+	#echo "hay archivos de bancos"
+	#echo `ps -p $process_pid`
+	if [ $process_pid -gt 0 ]; then
+	   	process_running=`ps -p "$process_pid" | grep -wc "$process_pid"`
+	fi
+	
+	#echo $process_running
+	if [ $process_pid -eq 0 ] || [ $process_running -eq 0 ]; then
+		#echo "no hay procesos corriendo"
+		#corro fsoldes
+		./mock_fsoldes.sh &
+		process_pid=$!
+		log_data "FSOLDES corriendo bajo el número: $process_pid"
+	else	
+		#echo "hay un proceso corriendo"
+		log_data "Invocacion de FSOLDES pospuesta para el siguiente ciclo" 
+	fi	
+else
+	log_data "No hay archivos de bancos para procesar."
+
 fi
 
 
+
 echo -e "\n\n" >> "$LOGDIR/recept.log"
-sleep 5
+sleep 10
 done
