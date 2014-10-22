@@ -25,6 +25,11 @@ function check_environment(){
 		echo "El directorio de Logs no fue iniciazizado"
 		exit
 	fi
+
+	if [ -z "$RECEPTCOUNTER" ]; then
+		echo "El contador de ciclos de recept no fue inicializado"
+		exit
+	fi
 	
 }
 
@@ -247,7 +252,7 @@ function log_rejected_file(){
 
 #loguea informacion
 function log_data(){
-	echo $1 >> "$LOGDIR/recept.log"
+	echo -e  $1 >> "$LOGDIR/recept.log"
 }
 
 
@@ -259,8 +264,16 @@ check_environment
 process_pid=0
 process_running=0
 while true ; do
+#cambio la variable recept counter y logueo ciclo
+current_cycle=`expr $RECEPTCOUNTER + 1`
+export RECEPTCOUNTER=$current_cycle
+log_date=`date "+%d/%m/%Y %H:%m:%S"`
+log_data "\n==================== RECEPT: CICLO $RECEPTCOUNTER ====================\n\nFecha: $log_date\n" 
+
 #chequeo si hay archivos de bancos o de expedientes para actualizar
+log_data "CHEQUEO DE NOVEDADES:\n"
 check_updates
+log_data "\n"
 
 #echo $process_pid
 #si hay archivos de bancos aceptados y no hay procesos corriendo corro fsoldes
@@ -277,19 +290,17 @@ if [ `ls -1 "$ACEPDIR" | grep -c "^[A-Z]*_[0-9]\{8\}$"` -gt 0 ]; then
 		#corro fsoldes
 		./mock_fsoldes.sh &
 		process_pid=$!
-		log_data "FSOLDES corriendo bajo el número: $process_pid"
+		log_data "FSOLDES corriendo bajo el número: $process_pid\n"
 	else	
 		#echo "hay un proceso corriendo"
-		log_data "Invocacion de FSOLDES pospuesta para el siguiente ciclo" 
+		log_data "Invocacion de FSOLDES pospuesta para el siguiente ciclo\n" 
 	fi	
 else
-	log_data "No hay archivos de bancos para procesar."
+	log_data "No hay archivos de bancos para procesar\n"
 
 fi
 
 #si hay archivos de expedientes aceptados y no hay procesos corriendo ejecuto cdossier
-
-###### FALTA CAMBIAR TODO PARA QUE TOME LOS EXPEDIENTES ######################
 if [ `ls -1 "$ACEPDIR" | grep -c "^[^@]*@[a-zA-Z\.\_0-9]*$"` -gt 0 ]; then
 	#echo "hay archivos de juzgados"
 	#echo `ps -p $process_pid`
