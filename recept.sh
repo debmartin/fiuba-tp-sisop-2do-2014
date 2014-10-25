@@ -1,3 +1,4 @@
+#!/bin/bash
 function check_environment(){
 
 	#chequeo directorio maestro
@@ -268,13 +269,14 @@ while true ; do
 current_cycle=`expr $RECEPTCOUNTER + 1`
 export RECEPTCOUNTER=$current_cycle
 log_date=`date "+%d/%m/%Y %H:%m:%S"`
-log_data "\n==================== RECEPT: CICLO $RECEPTCOUNTER ====================\n\nFecha: $log_date\n" 
+log_data "\n==================== RECEPT: CICLO $RECEPTCOUNTER ====================\n\nFecha: $log_date\n\n" 
 
 #chequeo si hay archivos de bancos o de expedientes para actualizar
 log_data "CHEQUEO DE NOVEDADES:\n"
 check_updates
-log_data "\n"
+log_data "\n\n"
 
+log_data "PROCESOS:\n"
 #echo $process_pid
 #si hay archivos de bancos aceptados y no hay procesos corriendo corro fsoldes
 if [ `ls -1 "$ACEPDIR" | grep -c "^[A-Z]*_[0-9]\{8\}$"` -gt 0 ]; then
@@ -314,18 +316,18 @@ if [ `ls -1 "$ACEPDIR" | grep -c "^[^@]*@[a-zA-Z\.\_0-9]*$"` -gt 0 ]; then
 		#corro cdossier
 		./mock_cdossier.sh &
 		process_pid=$!
-		log_data "CDOSSIER corriendo bajo el número: $process_pid"
+		log_data "CDOSSIER corriendo bajo el número: $process_pid\n"
 	else	
 		#echo "hay un proceso corriendo"
-		log_data "Invocacion de CDOSSIER pospuesta para el siguiente ciclo" 
+		log_data "Invocacion de CDOSSIER pospuesta para el siguiente ciclo\n" 
 	fi	
 else
-	log_data "No hay archivos de juzgados para procesar."
+	log_data "No hay archivos de juzgados para procesar\n"
 
 fi
 
 
 
-echo -e "\n\n" >> "$LOGDIR/recept.log"
+log_data "\n\n"
 sleep 10
 done
