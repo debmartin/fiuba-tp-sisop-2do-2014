@@ -3,7 +3,7 @@
 #procesar $archivo saldos.tab
 function procesarArchivo {
 	dir_arch_proc="$HOME/tp/ACEPDIR"
-	./logging.sh Fsoldes "Archivo a procesar: <$1> \n" INFO
+	./logging.sh fsoldes "Archivo a procesar: <$1> \n" INFO
 	entidad=`echo $1 | sed 's-\(^[A-Z]*\)_[0-9]*-\1-'` #I
 	fecha=`echo $1 | sed 's-^[A-Z]*_\([0-9]*\)-\1-'`  #I
 		
@@ -35,7 +35,7 @@ function procesarArchivo {
 			quinto_bloque=`echo $linea | cut -d ";" -f $((primer_campo_cbu + 4))`
 			cbu=$primer_bloque$segundo_bloque$tercer_bloque$cuarto_bloque$quinto_bloque
 		else
-			./logging.sh Fsoldes "Formato especificado del CBU no valido. Debe ser 1, 2 o 5. \n" ERR
+			./logging.sh fsoldes "Formato especificado del CBU no valido. Debe ser 1, 2 o 5. \n" ERR
 			reg_rech=$(($reg_rech + 1))
 			continue
 		fi
@@ -63,8 +63,8 @@ function procesarArchivo {
 			reg_acept=$(($reg_acept + 1))
 		else
 			linea_rech=`echo ${linea} | tr -d '\n'` #Elimino fin de linea
-			./logging.sh Fsoldes "Error en CBU. Registro original <$linea_rech>" ERR
-			./logging.sh Fsoldes "Se rechaza el registro.\n" INFO
+			./logging.sh fsoldes "Error en CBU. Registro original <$linea_rech>" ERR
+			./logging.sh fsoldes "Se rechaza el registro.\n" INFO
 			reg_rech=$(($reg_rech + 1))
 		fi
 	done < "$dir_arch_proc/$1"		
@@ -105,10 +105,10 @@ function procesarArchivo {
 	mv "$dir_arch_proc/$1" "$arch_proc_fin"
 	
 	#Grabar en el log (Punto 13)
-	./logging.sh Fsoldes "Cantidad de registros leidos: $reg_leidos" INFO
-	./logging.sh Fsoldes "Cantidad de registros aceptados: $reg_acept" INFO
-	./logging.sh Fsoldes "Cantidad de registros rechazados: $reg_rech" INFO
-	./logging.sh Fsoldes "Cantidad de registros eliminados: $reg_elim \n" INFO
+	./logging.sh fsoldes "Cantidad de registros leidos: $reg_leidos" INFO
+	./logging.sh fsoldes "Cantidad de registros aceptados: $reg_acept" INFO
+	./logging.sh fsoldes "Cantidad de registros rechazados: $reg_rech" INFO
+	./logging.sh fsoldes "Cantidad de registros eliminados: $reg_elim \n" INFO
 	
 	#Elimino temporal si fue creado
 	dir_temp="$HOME/tp/temp"
@@ -121,7 +121,7 @@ function procesarArchivo {
 #--------------------------MAIN--------------------------------------
 
 #Punto 1
-./logging.sh Fsoldes "Inicio de Fsoldes \n" INFO
+./logging.sh fsoldes "Inicio de Fsoldes \n" INFO
 
 #Creo saldos.tab y saldos.lis en blanco
 dir_saldos="$HOME/tp/MAEDIR/saldos/"
@@ -142,19 +142,19 @@ fi
 #Listo todos los archivos que son para procesar
 dir_arch_proc="$HOME/tp/ACEPDIR"
 cant_arch=0
-./logging.sh Fsoldes "Archivos de saldos a procesar:" INFO
+./logging.sh fsoldes "Archivos de saldos a procesar:" INFO
 for archivo in `ls $dir_arch_proc`; do
 	es_arch=`echo $archivo | grep -c "^[A-Z]*_[0-9]\{8\}*"`
 	if [ $es_arch -eq 1 ] && [ -f "$dir_arch_proc/$archivo" ]; then
-		./logging.sh Fsoldes "$archivo" INFO
+		./logging.sh fsoldes "$archivo" INFO
 		cant_arch=$(($cant_arch + 1))
 	fi
 done
 
 #Punto 2
 if [ $cant_arch -eq 0 ]; then
-	./logging.sh Fsoldes "No hay archivos para procesar \n" WAR
-	./logging.sh Fsoldes "Fin de Fsoldes \n" INFO
+	./logging.sh fsoldes "No hay archivos para procesar \n" WAR
+	./logging.sh fsoldes "Fin de Fsoldes \n" INFO
 	exit
 fi
 
@@ -187,12 +187,12 @@ for archivo in `ls $dir_arch_proc`; do
 				arch_rechdir="$HOME/tp/RECHDIR"
 				mv "$dir_arch_proc/$archivo" "$arch_rechdir"
 				if [ $fecha_saldo -gt $fecha ]; then
-					./logging.sh Fsoldes "Fecha del Archivo anterior a la existente. Se rechaza el archivo. \n" WAR
+					./logging.sh fsoldes "Fecha del Archivo anterior a la existente. Se rechaza el archivo. \n" WAR
 				else
-					./logging.sh Fsoldes "Archivo Duplicado. Se rechaza el archivo. \n" WAR
+					./logging.sh fsoldes "Archivo Duplicado. Se rechaza el archivo. \n" WAR
 				fi
 			fi
 		fi
 	fi
 done
-./logging.sh Fsoldes "Fin de Fsoldes" INFO
+./logging.sh fsoldes "Fin de Fsoldes" INFO
