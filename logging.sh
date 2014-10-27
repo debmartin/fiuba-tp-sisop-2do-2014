@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-CONF_FILE="$CONFDIR/deployer.conf" #HAY QUE PONER LA QUE CORRESPONDA
+CONF_FILE="$CONFDIR/Deployer.conf" #HAY QUE PONER LA QUE CORRESPONDA
 TRIM_LOG_SIZE=50
 
 # Recibe el nombre de la variable env de donde obtener el valor y devuelve el mismo
@@ -15,10 +15,9 @@ getFilePath() {
     CALLER="$1"
     if [ $CALLER == "Deployer" ] 
     then
-        echo "$CONFDIR/$CALLER.$LOGEXT" # $grupo/conf/Deployer.log
+        echo "$CONFDIR/$CALLER.log" #$grupo/conf/Deployer.log
     else
-        echo "$HOME/tp/LOGDIR/$CALLER.log" #ACA PONGAN SU DIRECCION DE RUTA PARA QUE AL MENOS LES ANDE
-        #echo "$LOGDIR/$CALLER.$LOGEXT" # $grupo/logdir/Proceso.log
+        echo "$LOGDIR/$CALLER.log" #$grupo/logdir/proceso.log
     fi
 }
 

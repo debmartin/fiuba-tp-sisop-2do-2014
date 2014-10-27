@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#procesar $archivo saldos.tab
+#procesar $archivo saldos.tab dir_saldos
 function procesarArchivo {
 	dir_arch_proc="$HOME/tp/ACEPDIR"
 	./logging.sh fsoldes "Archivo a procesar: <$1> \n" INFO
@@ -71,8 +71,11 @@ function procesarArchivo {
 			
 	#Resguardar archivos (Punto 8 y 9)
 	#Verificar que si /ant esta vacio entonces no tiene que copiar nada
-	cp "$2" "$HOME/tp/MAEDIR/saldos/ant"
-	cp "$arch_saldos_lis" "$HOME/tp/MAEDIR/saldos/ant"
+	if [ "$creado_ant" == false ]; then
+		cp "$2" "$3/ant"
+		cp "$arch_saldos_lis" "$3/ant"
+
+	fi
 
 	#Actualizo saldos.lis (Punto 10)
 	es_reemplazo=`cat $arch_saldos_lis | grep -c "^${entidad}"`
@@ -123,20 +126,27 @@ function procesarArchivo {
 #Punto 1
 ./logging.sh fsoldes "Inicio de Fsoldes \n" INFO
 
-#Creo saldos.tab y saldos.lis en blanco
+#Inicializo carpetas, saldos.tab y saldos.lis en blanco
 dir_saldos="$HOME/tp/MAEDIR/saldos/"
+dir_saldos_ant="$HOME/tp/MAEDIR/saldos/ant/"
 arch_saldos="$HOME/tp/MAEDIR/saldos/saldos.tab"
 arch_saldos_lis="$HOME/tp/MAEDIR/saldos/saldos.lis"
 if [ ! -d "$dir_saldos" ]; then
 	mkdir $dir_saldos
+fi
+if [ ! -d "$dir_saldos_ant" ]; then
+	mkdir $dir_saldos_ant
+	creado_ant=true
+else
+	creado_ant=false
 fi
 if [ ! -f "$arch_saldos" ]; then
 	touch $arch_saldos
 	chmod +x $arch_saldos
 fi
 if [ ! -f "$arch_saldos_lis" ]; then
-	touch $arch_saldos
-	chmod +x $arch_saldos
+	touch $arch_saldos_lis
+	chmod +x $arch_saldos_lis
 fi
 
 #Listo todos los archivos que son para procesar
@@ -171,13 +181,13 @@ for archivo in `ls $dir_arch_proc`; do
 		
 		#Si no esta la entidad en el saldos.tab solo proceso el archivo
 		if [ $esta_entidad -eq 0 ]; then
-			procesarArchivo $archivo $arch_saldos
+			procesarArchivo $archivo $arch_saldos $dir_saldos
 		else
 
 			#Si la entidad esta en saldos.tab, verifico la fecha y actualizo el registro de la entidad
 			fecha_saldo=`grep "^${entidad}" $arch_saldos | cut -d ";" -f 3`
 			if [ $fecha_saldo -lt $fecha ]; then 
-				procesarArchivo $archivo $arch_saldos
+				procesarArchivo $archivo $arch_saldos $dir_saldos
 				sed -i "/^${entidad}/d" $arch_saldos
 				registro="${entidad};${cod_entidad};${fecha};"
 				echo $registro >> $arch_saldos
@@ -195,4 +205,4 @@ for archivo in `ls $dir_arch_proc`; do
 		fi
 	fi
 done
-./logging.sh fsoldes "Fin de Fsoldes" INFO
+./logging.sh fsoldes "Fin de Fsoldes \n" INFO
