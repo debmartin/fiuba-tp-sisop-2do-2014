@@ -70,12 +70,8 @@ function procesarArchivo {
 	done < "$dir_arch_proc/$1"		
 			
 	#Resguardar archivos (Punto 8 y 9)
-	#Verificar que si /ant esta vacio entonces no tiene que copiar nada
-	creado_ant=`ls -l $dir_saldos_ant | grep 'total:[0-9]*' | sed 's-.*:\([0-9]*)-\1-g'` 
-	if [ $creado_ant -ne 0 ]; then
-		cp "$2" "$3/ant"
-		cp "$arch_saldos_lis" "$3/ant"
-	fi
+	cp "$2" "$3/ant"
+	cp "$arch_saldos_lis" "$3/ant"
 
 	#Actualizo saldos.lis (Punto 10)
 	es_reemplazo=`cat $arch_saldos_lis | grep -c "^${entidad}"`
@@ -105,6 +101,7 @@ function procesarArchivo {
 
 	#Mover archivo procesado a proc (Punto 12)
 	arch_proc_fin="$ACEPDIR/proc"
+	#./move.pl "$dir_arch_proc/$1" "$arch_proc_fin" fsoldes
 	mv "$dir_arch_proc/$1" "$arch_proc_fin"
 	
 	#Grabar en el log (Punto 13)
@@ -161,7 +158,7 @@ done
 #Punto 2
 if [ $cant_arch -eq 0 ]; then
 	./logging.sh fsoldes "No hay archivos para procesar \n" WAR
-	./logging.sh fsoldes "Fin de Fsoldes \n" INFO
+	./logging.sh fsoldes "Fin de Fsoldes \n\n" INFO
 	exit
 fi
 
@@ -202,4 +199,4 @@ for archivo in `ls $dir_arch_proc`; do
 		fi
 	fi
 done
-./logging.sh fsoldes "Fin de Fsoldes \n" INFO
+./logging.sh fsoldes "Fin de Fsoldes \n\n" INFO
