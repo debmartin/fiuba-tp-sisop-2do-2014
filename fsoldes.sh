@@ -100,9 +100,8 @@ function procesarArchivo {
 	fi
 
 	#Mover archivo procesado a proc (Punto 12)
-	arch_proc_fin="$ACEPDIR/proc"
-	#./move.pl "$dir_arch_proc/$1" "$arch_proc_fin" fsoldes
-	mv "$dir_arch_proc/$1" "$arch_proc_fin"
+	arch_proc_fin="$ACEPDIR/proc/"
+	./move.pl "$dir_arch_proc/$1" "$arch_proc_fin" fsoldes
 	
 	#Grabar en el log (Punto 13)
 	./logging.sh fsoldes "Cantidad de registros leidos: $reg_leidos" INFO
@@ -188,8 +187,8 @@ for archivo in `ls $dir_arch_proc`; do
 			else 
 
 				#El archivo no cumple con la fecha (antigua o igual)
-				arch_rechdir="$RECHDIR"
-				mv "$dir_arch_proc/$archivo" "$arch_rechdir"
+				dir_rechdir="$RECHDIR/"
+				./move.pl "$dir_arch_proc/$archivo" "$dir_rechdir" fsoldes
 				if [ $fecha_saldo -gt $fecha ]; then
 					./logging.sh fsoldes "Fecha del Archivo anterior a la existente. Se rechaza el archivo. \n" WAR
 				else
