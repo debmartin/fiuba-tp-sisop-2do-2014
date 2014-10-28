@@ -3,9 +3,10 @@
 #HAY QUE CORRER EL PROGRAMA ASÍ: 'source initializer.sh', de manera que los exports perduren en la sesión.
 
 export grupo=07
+export CONF_FILE=$grupo/conf/Deployer.conf
 
 log(){
-	echo -e "[$2] - $1"
+	./logging.sh initier $1 $2
 }
 
 initializeEnvironment(){
@@ -14,16 +15,16 @@ initializeEnvironment(){
 	echo "TP SO7508 Segundo Cuatrimestre 2014. Tema E Copyright © Grupo $grupo"
 	echo -e "Directorio Configuracion: $grupo/conf \nContenido:"
 	showFiles $grupo/conf
-	echo -e "Directorio Ejecutables: BINDIR $PATH_BINDIR \nContenido:"
-	showFiles $PATH_BINDIR
-	echo -e "Directorio Datos Maestros y Tablas: $PATH_MAEDIR \nContenido:"
-	showFiles $PATH_MAEDIR
-	echo "Directorio Flujo de Novedades: $PATH_NOVEDIR"
-	echo "Directorio Novedades Aceptadas: $PATH_ACEPDIR"
-	echo "Directorio Pedidos e Informes de Salida: $PATH_REPODIR"
-	echo "Directorio Archivos Rechazados: $PATH_RECHDIR"
-	echo "Directorio de Logs de Comandos: $PATH_LOGDIR"
-	echo "SubDirectorio de Resguardo de Archivos Duplicados: $PATH_DUPDIR"
+	echo -e "Directorio Ejecutables: BINDIR $BINDIR \nContenido:"
+	showFiles $BINDIR
+	echo -e "Directorio Datos Maestros y Tablas: $MAEDIR \nContenido:"
+	showFiles $MAEDIR
+	echo "Directorio Flujo de Novedades: $NOVEDIR"
+	echo "Directorio Novedades Aceptadas: $ACEPDIR"
+	echo "Directorio Pedidos e Informes de Salida: $REPODIR"
+	echo "Directorio Archivos Rechazados: $RECHDIR"
+	echo "Directorio de Logs de Comandos: $LOGDIR"
+	echo "SubDirectorio de Resguardo de Archivos Duplicados: $DUPDIR"
 	echo "Estado del Sistema: INICIALIZADO"
 }
 
@@ -53,16 +54,16 @@ showFiles()
 }
 
 loadConfig(){
-	if [ -f $grupo/conf/Deployer.conf ]
+	if [ -f $CONF_FILE ]
 	then
-		export PATH_MAEDIR=`grep ^MAEDIR $grupo/conf/Deployer.conf | sed s/MAEDIR=//g`
-		export PATH_BINDIR=`grep ^BINDIR $grupo/conf/Deployer.conf | sed s/BINDIR=//g`
-		export PATH_NOVEDIR=`grep ^NOVEDIR $grupo/conf/Deployer.conf | sed s/NOVEDIR=//g`
-		export PATH_ACEPDIR=`grep ^ACEPDIR $grupo/conf/Deployer.conf | sed s/ACEPDIR=//g`
-		export PATH_REPODIR=`grep ^REPODIR $grupo/conf/Deployer.conf | sed s/REPODIR=//g`
-		export PATH_RECHDIR=`grep ^RECHDIR $grupo/conf/Deployer.conf | sed s/RECHDIR=//g`
-		export PATH_LOGDIR=`grep ^LOGDIR $grupo/conf/Deployer.conf | sed s/LOGDIR=//g`
-		export PATH_DUPDIR=`grep ^DUPDIR $grupo/conf/Deployer.conf | sed s/DUPDIR=//g`
+		export MAEDIR=`grep ^MAEDIR $grupo/conf/Deployer.conf | sed s/MAEDIR=//g | sed s/=.*//`
+		export BINDIR=`grep ^BINDIR $grupo/conf/Deployer.conf | sed s/BINDIR=//g | sed s/=.*//`
+		export NOVEDIR=`grep ^NOVEDIR $grupo/conf/Deployer.conf | sed s/NOVEDIR=//g | sed s/=.*//`
+		export ACEPDIR=`grep ^ACEPDIR $grupo/conf/Deployer.conf | sed s/ACEPDIR=//g | sed s/=.*//`
+		export REPODIR=`grep ^REPODIR $grupo/conf/Deployer.conf | sed s/REPODIR=//g | sed s/=.*//`
+		export RECHDIR=`grep ^RECHDIR $grupo/conf/Deployer.conf | sed s/RECHDIR=//g | sed s/=.*//`
+		export LOGDIR=`grep ^LOGDIR $grupo/conf/Deployer.conf | sed s/LOGDIR=//g | sed s/=.*//`
+		export DUPDIR=`grep ^DUPDIR $grupo/conf/Deployer.conf | sed s/DUPDIR=//g | sed s/=.*//`
 		CONFIG_LOADED=0
 	else
 		echo -e "No se encuentra el archivo de configuración, verifique que la instalación se haya efectuado correctamente\n"
@@ -72,7 +73,7 @@ loadConfig(){
 }
 
 checkPermissions(){
-	chmod +600 $1
+	chmod 700 $1
 	PERMISSION_OK=`stat -c %a $1 | sed s/[6,7][0-7][0-7]/0/`
 	if [ "$PERMISSION_OK" != 0 ]
 	then
@@ -87,17 +88,21 @@ initializeReceipt(){
 	do
 		case $ACTION in
 		"SI")
-		RECEIPT_PROC=`pgrep -f vi`
-		if [ "$RECEIPT_PROC" == "" ]
-			echo "Se activará el script de receipt."
-			./receipt.sh
-		else
-			echo "El demonio de Receipt ya se encuentra corriendo."
-		fi
+			./debut.sh recept.sh
+		#RECEIPT_PROC=`pgrep debut.sh`
+		#if [ "$RECEIPT_PROC" == "" ]
+		#then
+		#	echo "Se activará el script de receipt."
+		#	./debut.sh recept.sh
+		#else
+			#echo "El demonio de Receipt ya se encuentra corriendo."
+		#fi
 		break
 		;;
 		"NO")
-		echo -e "Para arrancar el Receipt, por favor seguir los siguientes pasos...\n"
+		echo "Para arrancar el Receipt, por favor seguir los siguientes pasos"
+		echo "Ejecutar ./debut.sh recept.sh"
+		echo "Apretar enter"
 		break
 		;;
 		*)
@@ -113,27 +118,32 @@ initializeReceipt(){
 ########
 
 checkEnvironment
+if [ -z "$INITIALIZED" ]
 loadConfig
-if [ "$CONFIG_LOADED" == 0 ] # Cargó las configuraciones
 then
-	checkFileExists $PATH_MAEDIR
-	checkFileExists $PATH_BINDIR
-	checkFileExists $PATH_MAEDIR/bancos.dat
-	checkFileExists $PATH_MAEDIR/camaras.dat
-	checkFileExists $PATH_MAEDIR/pjn.dat
-	if [ "$CORRECT_INSTALL" == 0 ]
+	if [ "$CONFIG_LOADED" == 0 ] # Cargó las configuraciones
 	then
-		echo -e "La instalación no se realizó correctamente"
-		exit
+		checkFileExists $MAEDIR
+		checkFileExists $BINDIR
+		checkFileExists $MAEDIR/bancos.dat
+		checkFileExists $MAEDIR/camaras.dat
+		checkFileExists $MAEDIR/pjn.dat
+		if [ "$CORRECT_INSTALL" == 0 ]
+		then
+			echo -e "La instalación no se realizó correctamente"
+			exit
+		fi
+		checkPermissions $MAEDIR/bancos.dat
+		checkPermissions $MAEDIR/camaras.dat
+		checkPermissions $MAEDIR/pjn.dat
+		checkPermissions $BINDIR/*.sh
+		if [ "$CHECK_PERMISSIONS_FAILED" == 0 ]
+		then
+			echo -e "La instalación no se realizó correctamente, no se pueden cambiar los permisos"
+			exit
+		fi
+		initializeEnvironment
 	fi
-	checkPermissions $PATH_MAEDIR/bancos.dat
-	checkPermissions $PATH_MAEDIR/camaras.dat
-	checkPermissions $PATH_MAEDIR/pjn.dat
-	if [ "$CHECK_PERMISSIONS_FAILED" == 0 ]
-	then
-		echo -e "La instalación no se realizó correctamente, no se pueden cambiar los permisos"
-		exit
-	fi
-	initializeEnvironment
+	initializeReceipt
 fi
-initializeReceipt
+
