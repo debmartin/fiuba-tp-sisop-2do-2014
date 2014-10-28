@@ -14,7 +14,7 @@ REPODIR="demande"
 RECHDIR="nok"
 LOGDIR="log"
 DUPDIR="dup"
-
+ARCH_MAESTROS=( "camaras.dat" "bancos.dat" "pjn.dat" )
 DIRECTORIOS=( CONFDIR BINDIR MAEDIR NOVEDIR ACEPDIR REPODIR RECHDIR LOGDIR DUPDIR )
 
 
@@ -71,37 +71,35 @@ grabar_log_listado_componentes() {
 }
 
 directorios_completos() {
-	local directorios=$1
+	local directorios=($(ls -R | grep "\...*:$" | sed -e "s/\.\///g" -e "s/://g"))
+	directorios=("${directorios[@]%%:*}")
 	for directorio in "${directorios[@]}"; do
-		if [ "$2" == "" ]; then
-			local dir_padre="$directorio"
-		else
-			local dir_padre="$2/$directorio"
+#		if [ ! -d "../$directorio/" ]; then
+#			local dir_sin_maedir="$(echo "$directorio" | sed "s/$MAEDIR//")"
+#			if [ "$dir_sin_maedir" != "$directorio" ]; then
+				
+#			fi
+			FALTANTES+=("$directorio/")
+			FALTANTES_STR+="$directorio/ "
+			continue
 		fi
-
-		if [ -f "$dir_padre" ]; then
-			if [ ! -f "../$dir_padre" ]; then
-				FALTANTES+=("$dir_padre")
-				FALTANTES_STR+="$dir_padre "
+		
+		local contenidos_dir=$(ls "$directorio")
+		for archivo in "${contenidos_dir[@]}"; do
+			if [ -f "$directorio/$archivo" ]; then
+				if [ ! -f "../$directorio/$archivo" ]; then
+					FALTANTES+=( "$directorio/$archivo" )
+					FALTANTES_STR+="$directorio/$archivo "
+				fi
 			fi
-			continue
-		fi
-
-		if [ ! -d "../$dir_padre" ]; then
-			FALTANTES+=("$dir_padre")
-			FALTANTES_STR+="$dir_padre "
-			continue
-		fi
-
-		local subdirs=$(ls "$dir_padre")
-		directorios_completos "$(ls "$dir_padre")" dir_padre
+		done
 	done
 }
 
 instalacion_esta_completa() {
 	FALTANTES=()
 	FALTANTES_STR=""
-	directorios_completos DIRECTORIOS ""
+	directorios_completos
 	if [ ${#FALTANTES[@]} -ne "0" ]; then
 		return 1
 	fi
@@ -116,7 +114,7 @@ grabar_log_instalacion_completa() {
 
 grabar_log_instalacion_incompleta() {
 	grabar_log_listado_componentes
-	mostrar_y_grabar "$0" "INFO" "Componentes faltantes: ${!FALTANTES_STR}"
+	mostrar_y_grabar "$0" "INFO" "Componentes faltantes: $FALTANTES_STR"
 	mostrar_y_grabar "$0" "INFO" "Estado de la instalación: INCOMPLETA"
 }
 
@@ -185,8 +183,11 @@ definir_parametros_instalacion() {
 		MSJ+=$(obtener_tipo_directorio "$directorio")
 		MSJ+=" (${!directorio}): "
 		mostrar_y_grabar "$0" "INFO" "$MSJ"
-		read directorio
-
+		read $directorio
+		if [[ "${!directorio}" = /* ]]; then
+			local GRUPO_ESCAPE="$(echo "$GRUPO" | sed 's/[[\.*^$/]/\\&/g')"
+			eval $directorio="'$(echo ${!directorio} | sed "s/$GRUPO_ESCAPE\///")'"
+		fi
 		if [ "$directorio" == "$NOVEDIR" ]; then
 			mostrar_y_grabar "$0" "INFO" "Defina espacio mínimo libre para el arribo de novedades en Mbytes ($DATASIZE): "
 			read DATASIZE
@@ -252,7 +253,7 @@ obtener_directorios() {
 	local PATH_ABSOLUTO="$(cd "$(dirname "../../")" && pwd)/"
 	local PATH_ABS_ESCAPE="$(echo "$PATH_ABSOLUTO" | sed 's/[[\.*^$/]/\\&/g')"
 	for directorio in "${DIRECTORIOS[@]}"; do
-		local PATH_VARIABLE="$(grep "$directorio" "$PATH_ABSOLUTO/$ARCHCONF" | sed "s/^[^=]*=//" | sed "s/=.*//" | sed "s/${PATH_ABS_ESCAPE}//")"
+		local PATH_VARIABLE="$(grep "$directorio" "$PATH_ABSOLUTO/$ARCHCONF" | sed -e "s/^[^=]*=//" -e "s/=.*//" -e "s/${PATH_ABS_ESCAPE}//")"
 		eval $directorio="'$PATH_VARIABLE'"
 	done
 }
@@ -262,7 +263,9 @@ instalar() {
 	mostrar_y_grabar "$0" "INFO" "Instalando Programas y Funciones"
 	cp -r "$BINDIR/" "../"
 	mostrar_y_grabar "$0" "INFO" "Instalando Archivos Maestros y Tablas"
-	cp -r "$MAEDIR/" "../"
+	for archivo in "${ARCH_MAESTROS[@]}"; do
+		cp "$MAEDIR/$archivo" "../$MAEDIR/"
+	done
 	mostrar_y_grabar "$0" "INFO" "Actualizando la configuración del sistema"
 	guardar_archivo_configuracion
 	mostrar_y_grabar "$0" "INFO" "Instalación CONCLUIDA"
