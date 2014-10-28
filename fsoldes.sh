@@ -2,13 +2,13 @@
 
 #procesar $archivo saldos.tab dir_saldos
 function procesarArchivo {
-	dir_arch_proc="$HOME/tp/ACEPDIR"
+	dir_arch_proc="$ACEPDIR"
 	./logging.sh fsoldes "Archivo a procesar: <$1> \n" INFO
 	entidad=`echo $1 | sed 's-\(^[A-Z]*\)_[0-9]*-\1-'` #I
 	fecha=`echo $1 | sed 's-^[A-Z]*_\([0-9]*\)-\1-'`  #I
 		
 	#Punto 3
-	arch_bancos="$HOME/tp/MAEDIR/bancos.dat"
+	arch_bancos="$MAEDIR/bancos.dat"
 	cod_entidad=`grep "^${entidad}" $arch_bancos | cut -d ";" -f 2`
 	primer_campo_cbu=`grep "^${entidad}" $arch_bancos | cut -d ";" -f 4`
 	ubic_campo_saldo=`grep "^${entidad}" $arch_bancos | cut -d ";" -f 5`
@@ -49,8 +49,8 @@ function procesarArchivo {
 			saldo=`echo $linea | cut -d ";" -f $ubic_campo_saldo`
 			registro="${1};${cod_entidad};${cbu};${saldo}"
 			#Escribo en archivo temporal el registro
-			dir_temp="$HOME/tp/temp"
-			arch_temp="$HOME/tp/temp/temp.txt"
+			dir_temp="$BINDIR/temp"
+			arch_temp="$BINDIR/temp.txt"
 			if [ ! -d "$dir_temp" ]; then
 				mkdir $dir_temp
 				creado_temp=true
@@ -71,10 +71,10 @@ function procesarArchivo {
 			
 	#Resguardar archivos (Punto 8 y 9)
 	#Verificar que si /ant esta vacio entonces no tiene que copiar nada
-	if [ "$creado_ant" == false ]; then
+	creado_ant=`ls -l $dir_saldos_ant | grep 'total:[0-9]*' | sed 's-.*:\([0-9]*)-\1-g'` 
+	if [ $creado_ant -ne 0 ]; then
 		cp "$2" "$3/ant"
 		cp "$arch_saldos_lis" "$3/ant"
-
 	fi
 
 	#Actualizo saldos.lis (Punto 10)
@@ -90,7 +90,7 @@ function procesarArchivo {
 		done < "$arch_saldos_lis"
 	fi
 	#Si se creo temporal (hay registros validos), actualizo saldos.lis
-	arch_temp="$HOME/tp/temp/temp.txt"
+	arch_temp="$BINDIR/temp/temp.txt"
 	if [ -f "$arch_temp" ]; then
 		while read -r linea; do
 			echo $linea >> $arch_saldos_lis
@@ -104,7 +104,7 @@ function procesarArchivo {
 	fi
 
 	#Mover archivo procesado a proc (Punto 12)
-	arch_proc_fin="$HOME/tp/ACEPDIR/proc"
+	arch_proc_fin="$ACEPDIR/proc"
 	mv "$dir_arch_proc/$1" "$arch_proc_fin"
 	
 	#Grabar en el log (Punto 13)
@@ -114,7 +114,7 @@ function procesarArchivo {
 	./logging.sh fsoldes "Cantidad de registros eliminados: $reg_elim \n" INFO
 	
 	#Elimino temporal si fue creado
-	dir_temp="$HOME/tp/temp"
+	dir_temp="$BINDIR/temp"
 	if [[ "$creado_temp" == true ]]; then
 		rm -r $dir_temp
 	fi
@@ -126,19 +126,16 @@ function procesarArchivo {
 #Punto 1
 ./logging.sh fsoldes "Inicio de Fsoldes \n" INFO
 
-#Inicializo carpetas, saldos.tab y saldos.lis en blanco
-dir_saldos="$HOME/tp/MAEDIR/saldos/"
-dir_saldos_ant="$HOME/tp/MAEDIR/saldos/ant/"
-arch_saldos="$HOME/tp/MAEDIR/saldos/saldos.tab"
-arch_saldos_lis="$HOME/tp/MAEDIR/saldos/saldos.lis"
+#Inicializo carpetas, saldos.tab y saldos.lis en blanco (deberian estar creadas por el Deployer)
+dir_saldos="$MAEDIR/saldos/"
+dir_saldos_ant="$MAEDIR/saldos/ant/"
+arch_saldos="$MAEDIR/saldos/saldos.tab"
+arch_saldos_lis="$MAEDIR/saldos/saldos.lis"
 if [ ! -d "$dir_saldos" ]; then
 	mkdir $dir_saldos
 fi
 if [ ! -d "$dir_saldos_ant" ]; then
 	mkdir $dir_saldos_ant
-	creado_ant=true
-else
-	creado_ant=false
 fi
 if [ ! -f "$arch_saldos" ]; then
 	touch $arch_saldos
@@ -150,7 +147,7 @@ if [ ! -f "$arch_saldos_lis" ]; then
 fi
 
 #Listo todos los archivos que son para procesar
-dir_arch_proc="$HOME/tp/ACEPDIR"
+dir_arch_proc="$ACEPDIR"
 cant_arch=0
 ./logging.sh fsoldes "Archivos de saldos a procesar:" INFO
 for archivo in `ls $dir_arch_proc`; do
@@ -176,7 +173,7 @@ for archivo in `ls $dir_arch_proc`; do
 		entidad=`echo $archivo | sed 's-\(^[^0-9]*\)_[0-9]*-\1-'`
 		fecha=`echo $archivo | sed 's-^[^0-9]*_\([0-9]*\)-\1-'`
 		esta_entidad=`cat $arch_saldos | grep -c "^${entidad}"`
-		arch_bancos="$HOME/tp/MAEDIR/bancos.dat"
+		arch_bancos="$MAEDIR/bancos.dat"
 		cod_entidad=`grep "^${entidad}" $arch_bancos | cut -d ";" -f 2`
 		
 		#Si no esta la entidad en el saldos.tab solo proceso el archivo
@@ -194,7 +191,7 @@ for archivo in `ls $dir_arch_proc`; do
 			else 
 
 				#El archivo no cumple con la fecha (antigua o igual)
-				arch_rechdir="$HOME/tp/RECHDIR"
+				arch_rechdir="$RECHDIR"
 				mv "$dir_arch_proc/$archivo" "$arch_rechdir"
 				if [ $fecha_saldo -gt $fecha ]; then
 					./logging.sh fsoldes "Fecha del Archivo anterior a la existente. Se rechaza el archivo. \n" WAR
