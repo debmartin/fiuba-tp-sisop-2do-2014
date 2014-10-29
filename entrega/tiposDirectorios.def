@@ -1,0 +1,9 @@
+CONFDIR:Directorio de Configuracion
+BINDIR:Directorio de Ejecutables
+MAEDIR:Directorio de Datos Maestros y Tablas
+NOVEDIR:Directorio de Flujo de Novedades
+ACEPDIR:Directorio de Novedades Aceptadas
+REPODIR:Directorio de Pedidos e Informes de Salida
+RECHDIR:Directorio de Archivos Rechazados
+LOGDIR:Directorio de Logs de Comandos
+DUPDIR:Subdirectorio de Resguardo de Archivos Duplicados
