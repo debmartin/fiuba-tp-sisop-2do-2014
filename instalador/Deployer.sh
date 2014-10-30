@@ -45,8 +45,8 @@ mostrar_y_grabar() {
 
 grabar_mensajes_iniciales() {
 	mostrar_y_grabar "$0" "INFO" "Inicio de Ejecución de Deployer"
-	mostrar_y_grabar "$0" "INFO" "Log de la instalación: \$$ARCHLOG"
-	mostrar_y_grabar "$0" "INFO" "Directorio predefinido de Configuración: \$$CONFDIR"
+	mostrar_y_grabar "$0" "INFO" "Log de la instalación: $ARCHLOG"
+	mostrar_y_grabar "$0" "INFO" "Directorio predefinido de Configuración: $CONFDIR"
 }
 
 
@@ -74,11 +74,7 @@ directorios_completos() {
 	local directorios=($(ls -R | grep "\...*:$" | sed -e "s/\.\///g" -e "s/://g"))
 	directorios=("${directorios[@]%%:*}")
 	for directorio in "${directorios[@]}"; do
-#		if [ ! -d "../$directorio/" ]; then
-#			local dir_sin_maedir="$(echo "$directorio" | sed "s/$MAEDIR//")"
-#			if [ "$dir_sin_maedir" != "$directorio" ]; then
-				
-#			fi
+		if [ ! -d "../$directorio/" ]; then
 			FALTANTES+=("$directorio/")
 			FALTANTES_STR+="$directorio/ "
 			continue
@@ -179,11 +175,18 @@ grabar_log_perl_version() {
 
 definir_parametros_instalacion() {
 	for directorio in "${DIRECTORIOS[@]}"; do
+		if [ "$directorio" == "CONFDIR" ]; then
+			continue
+		fi
 		local MSJ="Defina el "
 		MSJ+=$(obtener_tipo_directorio "$directorio")
 		MSJ+=" (${!directorio}): "
 		mostrar_y_grabar "$0" "INFO" "$MSJ"
-		read $directorio
+		local entrada=""
+		read $entrada
+		if [ "$entrada" != "" ]; then
+			eval $directorio="'$entrada'"
+		fi
 		if [[ "${!directorio}" = /* ]]; then
 			local GRUPO_ESCAPE="$(echo "$GRUPO" | sed 's/[[\.*^$/]/\\&/g')"
 			eval $directorio="'$(echo ${!directorio} | sed "s/$GRUPO_ESCAPE\///")'"
@@ -213,14 +216,13 @@ directorios_son_correctos() {
 }
 
 crear_directorios() {
-	local DIRECTORIOS_TOTALES=()
-	DIRECTORIOS_TOTALES+=${DIRECTORIOS[@]}
-	DIRECTORIOS_TOTALES+=("$MAEDIR/saldos")
-	DIRECTORIOS_TOTALES+=("$MAEDIR/saldos/ant")
-	DIRECTORIOS_TOTALES+=("$ACEPDIR/proc")
-	DIRECTORIOS_TOTALES+=("$REPODIR/ant")
+	local SALDOS="$MAEDIR/saldos"
+	local MANT="$MAEDIR/saldos/ant"
+	local PROC="$ACEPDIR/proc"
+	local RANT="$REPODIR/ant"
+	local DIRECTORIOS_TOTALES=("${DIRECTORIOS[@]}" SALDOS MANT PROC RANT)
 	mostrar_y_grabar "$0" "INFO" "Creando Estructuras de directorio. . . ."
-	for directorio in "${DIRECTORIOS[@]}"; do
+	for directorio in "${DIRECTORIOS_TOTALES[@]}"; do
 		local DIR="../${!directorio}"
 		if [ ! -d "$DIR" ]; then
 			mostrar_y_grabar "$0" "INFO" "$DIR"
