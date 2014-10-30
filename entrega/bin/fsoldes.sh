@@ -50,7 +50,7 @@ function procesarArchivo {
 			registro="${1};${cod_entidad};${cbu};${saldo}"
 			#Escribo en archivo temporal el registro
 			dir_temp="$BINDIR/temp"
-			arch_temp="$BINDIR/temp.txt"
+			arch_temp="$BINDIR/temp/temp.txt"
 			if [ ! -d "$dir_temp" ]; then
 				mkdir $dir_temp
 				creado_temp=true
@@ -122,6 +122,12 @@ function procesarArchivo {
 #Punto 1
 ./logging.sh fsoldes "Inicio de Fsoldes \n" INFO
 
+#Verifico si el ambiente fue inicialiazado correctamente
+if [ $INITIALIZED -ne 1 ]; then
+	./logging.sh fsoldes "Ambiente no inicializado, no se puede ejecutar Fsoldes \n" ERR
+	./logging.sh fsoldes "Fin de Fsoldes \n\n" INFO
+fi
+
 #Inicializo carpetas, saldos.tab y saldos.lis en blanco (deberian estar creadas por el Deployer)
 dir_saldos="$MAEDIR/saldos/"
 dir_saldos_ant="$MAEDIR/saldos/ant/"
@@ -158,7 +164,6 @@ done
 if [ $cant_arch -eq 0 ]; then
 	./logging.sh fsoldes "No hay archivos para procesar \n" WAR
 	./logging.sh fsoldes "Fin de Fsoldes \n\n" INFO
-	exit
 fi
 
 for archivo in `ls $dir_arch_proc`; do
