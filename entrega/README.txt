@@ -84,14 +84,20 @@ COMO INSTALAR
 
 EJECUCION DEL PROGRAMA
 
+INITIER
+
 	El programa se ejecuta ingresando el comando:
 		
 		source initializer.sh	o	. ./initializer.sh
 
 	En este modo, el programa inicializara todos los recursos 
 	necesarios para su correcta ejecucion.
-
-INITIER
+	El Initier leerá las variables guardadas por el instalador, en el
+	archivo conf/Deployer.conf. Luego validará la correcta instalación
+	de los directorios, permisos de los scripts, y por último le dará
+	la opción al usuario de iniciar el daemon de recept.
+	Nótese que una vez que el initier inicializó el ambiente, no se podrá
+	reinicializar hasta haber salido de la sesión.
 
 RECEPT
 	
