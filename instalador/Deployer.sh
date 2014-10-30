@@ -239,7 +239,7 @@ guardar_archivo_configuracion() {
 	touch "../$ARCHCONF"
 	local FECHA=$(date +"%d/%m/%Y - %H:%M:%S")
 	local PATH_ABSOLUTO="$(cd "$(dirname "../../")" && pwd)"
-	echo "GRUPO=$PATH_ABSOLUTO/$GRUPO=$USER=$FECHA" >> "../$ARCHCONF"
+	echo "$GRUPO=$USER=$FECHA" >> "../$ARCHCONF"
 
 	for directorio in "${DIRECTORIOS[@]}"; do
 		PATH_ABSOLUTO="$(cd "$(dirname "../${!directorio}")" && pwd)"
