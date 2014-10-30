@@ -3,8 +3,8 @@
 #HAY QUE CORRER EL PROGRAMA ASÍ: 'source initializer.sh', de manera que los exports perduren en la sesión.
 
 export grupo=..
-#export CONF_FILE=$grupo/conf/Deployer.conf
-export CONF_FILE=../conf/Deployer.conf
+export CONF_FILE=$grupo/conf/Deployer.conf
+#export CONF_FILE=../conf/Deployer.conf
 
 log(){
 	./logging.sh initier $1 $2
@@ -38,11 +38,11 @@ checkEnvironment(){
 
 #$1: Archivo a verificar
 checkFileExists(){
-	if [ ! -e $1 ]
+	if [ ! -e "$1" ]
 	then	
 		CORRECT_INSTALL=0
 		echo -e "No se encuentra el archivo $1"
-		log "No se encuentra el archivo $1" "ERR"
+		log "No se encuentra el archivo $1" ERR
 	fi
 }
 
@@ -55,7 +55,7 @@ showFiles()
 }
 
 loadConfig(){
-	if [ -f $CONF_FILE ]
+	if [ -f "$CONF_FILE" ]
 	then
 		export MAEDIR=`grep ^MAEDIR $grupo/conf/Deployer.conf | sed s/MAEDIR=//g | sed s/=.*//`
 		export CONFDIR=`grep ^CONFDIR $grupo/conf/Deployer.conf | sed s/CONFDIR=//g | sed s/=.*//`
@@ -69,7 +69,7 @@ loadConfig(){
 		CONFIG_LOADED=0
 	else
 		echo -e "No se encuentra el archivo de configuración, verifique que la instalación se haya efectuado correctamente\n"
-		log "No se encuentra $grupo/conf/Deployer.conf" "ERR"
+		log "No se encuentra $grupo/conf/Deployer.conf" ERR
 		CONFIG_LOADED=1
 	fi
 }
