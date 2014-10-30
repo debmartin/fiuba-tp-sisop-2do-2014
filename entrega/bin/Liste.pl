@@ -24,6 +24,7 @@ $STATE_ID = "e";
 $BALANCE_ID = "s";
 $TYPE_ID = "p";
 $URGENCY_ID = "u";
+$FIELDS_COUNT = 8;
 $EXP_POSITION = 0;
 $CAMERA_POSITION = 1;
 $COURT_POSITION = 2;
@@ -104,7 +105,7 @@ $OUT_MODE_FILE = 2;
 %courts = ();
 %banks = ();
 %balances = ();
-%exp_numbers = (); #TODO Definir si listar los expedientes existentes o no poner nada
+%exp_numbers = ();
 %filters = ();
 @input_files = ();
 %results = ();
@@ -277,36 +278,85 @@ sub getCamerasFilterValues {
 	print "Elija Cámaras a incluir al procesar los datos, ingresando una o varias ".
 		  "separadas por comas. Ingrese $SELECT_ALL si no desea excluir ninguna.\n";
 	print "Cámaras disponibles:\n";
-	foreach (keys(%cameras)) {
-		print "$_ - ".join(", ",@{$cameras{$_}})."\n";
+	my $id = 1;
+	foreach (sort(keys(%cameras))) {
+		print "$id - $_\n";
+		$id++;
 	}
-	print "Ingrese la/las deseadas por id (primer columna), o $SELECT_ALL para ".
+	print "Ingrese la/las deseadas por el número (primer columna), o $SELECT_ALL para ".
 		  "no excluir ninguna: ";
 	readFilterValues($filter_choice);
+	return if($filters{$filter_choice}[0] eq $SELECT_ALL);
+	# Reemplaza los valores de id leidos por el estado correspondiente, y filtra los incorrectos
+	my $choices_ref = $filters{$filter_choice};
+	my @ordered_cameras = sort(keys(%cameras));
+	my $index = 0;
+	while ($index <= $#{$choices_ref}) {
+		my $id = ${$choices_ref}[$index];
+		if (($id < 1) || ($id > scalar(@ordered_cameras))) {
+			splice(@{$choices_ref}, $index, 1);
+		} else {
+			splice(@{$choices_ref}, $index, 1, $ordered_cameras[$id-1]);
+			$index++;
+		}
+	}
 }
 
 sub getCourtsFilterValues {
 	my $filter_choice = @_[0];
 	printFilterValuesHeader($filter_choice);
 	print "Tribunales disponibles:\n";
-	foreach (keys(%courts)) {
-		print "$_ - ".join(", ",@{$courts{$_}})."\n";
+	my $id = 1;
+	foreach (sort(keys(%courts))) {
+		my ($desc_1, $desc_2) = @{$courts{$_}};
+		print "$id - $desc_1";
+		print ", $desc_2" if($desc_2 ne "");
+		print "\n";
+		$id++;
 	}
 	print "Ingrese el/los deseados por id (primer columna), o $SELECT_ALL para ".
 		  "no excluir ninguno: ";
 	readFilterValues($filter_choice);
+	return if($filters{$filter_choice}[0] eq $SELECT_ALL);
+	# Reemplaza los valores de id leidos por el estado correspondiente, y filtra los incorrectos
+	my $choices_ref = $filters{$filter_choice};
+	my @ordered_courts = sort(keys(%courts));
+	my $index = 0;
+	while ($index <= $#{$choices_ref}) {
+		my $id = ${$choices_ref}[$index];
+		if (($id < 1) || ($id > scalar(@ordered_courts))) {
+			splice(@{$choices_ref}, $index, 1);
+		} else {
+			splice(@{$choices_ref}, $index, 1, $ordered_courts[$id-1]);
+			$index++;
+		}
+	}
 }
 
 sub getExpFilterValues {
-	#TODO Definir si listar los expedientes existentes o no poner nada
 	my $filter_choice = @_[0];
 	printFilterValuesHeader($filter_choice);
-	#print "Expedientes disponibles:\n";
-	#foreach (keys(%courts)) {
-	#    print "$_ - ".join(", ",@{$courts{$_}})."\n";
-	#}
+	print "Expedientes disponibles:\n";
+	my $id = 1;
+	foreach (@exp_numbers) {
+		print "$id - $_\n";
+		$id++;
+	}
 	print "Ingrese el/los deseados, o $SELECT_ALL para no excluir ninguno: ";
 	readFilterValues($filter_choice);
+	return if($filters{$filter_choice}[0] eq $SELECT_ALL);
+	# Reemplaza los valores de id leidos por el expediente correspondiente, y filtra los incorrectos
+	my $choices_ref = $filters{$filter_choice};
+	my $index = 0;
+	while ($index <= $#{$choices_ref}) {
+		my $id = ${$choices_ref}[$index];
+		if (($id < 1) || ($id > scalar(@exp_numbers))) {
+			splice(@{$choices_ref}, $index, 1);
+		} else {
+			splice(@{$choices_ref}, $index, 1, $exp_numbers[$id-1]);
+			$index++;
+		}
+	}
 }
 
 sub getStateFilterValues {
@@ -321,6 +371,7 @@ sub getStateFilterValues {
 	print "Ingrese el/los deseados por el número (primer columna), o $SELECT_ALL para ".
 		  "no excluir ninguno: ";
 	readFilterValues($filter_choice);
+	return if($filters{$filter_choice}[0] eq $SELECT_ALL);
 	# Reemplaza los valores de id leidos por el estado correspondiente, y filtra los incorrectos
 	my $choices_ref = $filters{$filter_choice};
 	my $index = 0;
@@ -392,6 +443,7 @@ sub getTypeFilterValues {
 	print "Ingrese el/los deseados por el número (primer columna), o $SELECT_ALL para ".
 		  "no excluir ninguno: ";
 	readFilterValues($filter_choice);
+	return if($filters{$filter_choice}[0] eq $SELECT_ALL);
 	# Reemplaza los valores de id leidos por el tipo correspondiente, y filtra los incorrectos
 	my $choices_ref = $filters{$filter_choice};
 	my @ordered_types = sort(keys(%ACTIONS_BY_TYPE));
@@ -417,6 +469,7 @@ sub getUrgencyFilterValues {
 	print "Ingrese el/los deseados por el número (primer columna), o $SELECT_ALL para ".
 		  "no excluir ninguno: ";
 	readFilterValues($filter_choice);
+	return if($filters{$filter_choice}[0] eq $SELECT_ALL);
 	# Reemplaza los valores de id leidos por el tipo correspondiente, y filtra los incorrectos
 	my $choices_ref = $filters{$filter_choice};
 	my @ordered_days = sort(keys(%ACTIONS_BY_DAYS));
@@ -440,6 +493,7 @@ sub processFile {
 		chomp $_;
 		next if ($_ == "");
 		@data = split(";", $_);
+		next if(scalar(@data) < $FIELDS_COUNT);
 		my $filtered = 0;
 		foreach $filter (keys(%filters)) {
 			next if (${$filters{$filter}}[0] eq $SELECT_ALL);
@@ -689,7 +743,7 @@ sub writeReqAssign4Action {
 
 sub writeReqAssignCommon {
 	my $n = @_[0];
-	my($day, $month, $year) = (localtime(time + n*86400))[3,4,5]; # Se suman n dias
+	my($day, $month, $year) = (localtime(time + $n*86400))[3,4,5]; # Se suman n dias
 	print $output_handler "Tema: Pedido de Asignación de Cuenta Bancaria Fecha de Origen: ".
 	"$day/".($month+1)."/".($year+1900)." Fojas: 1\n";
 	print $output_handler "Extracto: Reitérese solicitud de asignación de cuenta bancaria ".
@@ -816,6 +870,18 @@ sub setUpBalancesHash {
 	return $ret;
 }
 
+sub setUpExpList {
+	my (@data) = ();
+	open(my $FH, catfile($REPODIR, $EXP_OUT)) || return -1;
+	while (<$FH>) {
+		chomp $_;
+		@data = split(";", $_);
+		$data[$EXP_POSITION] =~ s/^\s+|\s+$//g;
+		push(@exp_numbers, $data[$EXP_POSITION]);
+	}
+	close($FH);
+}
+
 sub printHelp {
 	print "\nAyuda del programa Liste\n\n";
 	print "El programa Liste se encarga de elaborar informes y pedidos, en base a ".
@@ -859,6 +925,7 @@ setUpCamerasHash();
 setUpCourtsHash();
 setUpBanksHash();
 setUpBalancesHash();
+setUpExpList();
 
 #foreach $key (keys(%balances)) {
 #	$s = join(",", @{$balances{$key}});
