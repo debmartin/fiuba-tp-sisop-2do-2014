@@ -49,8 +49,8 @@ function procesarArchivo {
 			saldo=`echo $linea | cut -d ";" -f $ubic_campo_saldo`
 			registro="${1};${cod_entidad};${cbu};${saldo}"
 			#Escribo en archivo temporal el registro
-			dir_temp="$BINDIR/temp"
-			arch_temp="$BINDIR/temp/temp.txt"
+			dir_temp="$MAEDIR/saldos/temp"
+			arch_temp="$MAEDIR/saldos/temp/temp_saldos.txt"
 			if [ ! -d "$dir_temp" ]; then
 				mkdir $dir_temp
 				creado_temp=true
@@ -86,7 +86,7 @@ function procesarArchivo {
 		done < "$arch_saldos_lis"
 	fi
 	#Si se creo temporal (hay registros validos), actualizo saldos.lis
-	arch_temp="$BINDIR/temp/temp.txt"
+	arch_temp="$MAEDIR/saldos/temp/temp_saldos.txt"
 	if [ -f "$arch_temp" ]; then
 		while read -r linea; do
 			echo $linea >> $arch_saldos_lis
@@ -110,7 +110,7 @@ function procesarArchivo {
 	./logging.sh fsoldes "Cantidad de registros eliminados: $reg_elim \n" INFO
 	
 	#Elimino temporal si fue creado
-	dir_temp="$BINDIR/temp"
+	dir_temp="$MAEDIR/saldos/temp"
 	if [[ "$creado_temp" == true ]]; then
 		rm -r $dir_temp
 	fi
