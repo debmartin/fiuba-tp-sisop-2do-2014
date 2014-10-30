@@ -983,10 +983,11 @@ while ($mode != $MODE_EXIT) {
 	
 	# Seleccion de salida de los resultados
 	$output_mode = getOutputMode();
-	$output_handler = STDOUT;
 	if ($output_mode == $OUT_MODE_FILE) {
 		$output_file_name = getOutputFileName();
 		open($output_handler, ">".catfile($REPODIR, $output_file_name));
+	} else {
+		$output_handler = STDOUT;
 	}
 	print "\n";
 	
