@@ -69,7 +69,7 @@ loadConfig(){
 		CONFIG_LOADED=0
 	else
 		echo -e "No se encuentra el archivo de configuración, verifique que la instalación se haya efectuado correctamente\n"
-		log "No se encuentra $grupo/conf/Deployer.conf" ERR
+		echo "Error: No se encuentra $CONF_FILE"
 		CONFIG_LOADED=1
 	fi
 }
