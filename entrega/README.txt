@@ -112,6 +112,26 @@ RECEPT
 
 FSOLDES
 
+	El programa Fsoldes tiene como objetivo efectuar la actualizacion de saldos a
+	partir de los archivos de novedades de bancos. Es invocado por Recept y se
+	ejecuta desde la línea de comando como
+	
+		  ./fsoldes.sh
+		  
+	Cada vez que hay archivos de novedades en la carpeta de aceptados se verifica
+	la fecha de la entidad en el bancos.dat para ver si se procesa o no el archivo
+	en cuestión. 
+	Si la fecha es correcta (mayor a la almacenada en el .dat para esa entidad) se 
+	contruyen y se toman todos los datos del registro para poder actualizar tanto 
+	el .dat mencionado como el saldos.lis que contiene todos los saldos leidos. 
+	Además cada vez que se lee un registro se verifican que los datos sean
+	correctos y no contengan formatos erroneos. En cuanto a la  actualización de
+	saldos.lis, se reemplazan todos los registros de la entidad en cuestión por los 
+	leidos.
+	Si la fecha es anterior o igual, se procede a enviar el archivo de novedades
+	a la carpeta de rechazados.
+
+	
 CDOSSIER
 
 	El programa Cdossier se encarga de procesar registros de archivos de
