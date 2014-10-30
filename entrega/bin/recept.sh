@@ -27,8 +27,8 @@ function check_environment(){
 		exit
 	fi
 
-	if [ -z "$RECEPTCOUNTER" ]; then
-		echo "El contador de ciclos de recept no fue inicializado"
+	if [ -z "$CONFDIR" ] || [ ! -d "$CONFDIR" ]; then
+		echo "El directo de confs no ha sido inicializado"
 		exit
 	fi
 	
@@ -43,7 +43,7 @@ function check_updates(){
 	IFS=$'\n'
 	for f in `ls -1 "$NOVEDIR"`
 	do
-		echo $f
+		#echo $f
 		reject_file=false
 		file_type=0
 		#cheuqueo si el nombre del archivo podria ser de un banco
@@ -77,7 +77,8 @@ function check_updates(){
 
 		if [ $reject_file == false ]; then
 			#lo muevo a aceptados y logueo
-			mv "$NOVEDIR/$f" "$ACEPDIR/$f"
+			#mv "$NOVEDIR/$f" "$ACEPDIR/$f"
+			accept_file $f
 			if [ $file_type -eq 1 ]; then
 				log_data "Archivo de Saldos aceptado: $f"
 			elif [ $file_type -eq 2 ]; then
@@ -85,7 +86,8 @@ function check_updates(){
 			fi
 		else
 			#lo muevo a la carpeta de rechazados
-			mv "$NOVEDIR/$f" "$RECHDIR/$f"
+			#mv "$NOVEDIR/$f" "$RECHDIR/$f"
+			reject_file $f
 		fi	
 	done 
   else
@@ -209,7 +211,7 @@ function check_valid_records_file(){
     fi
     ## chequeo que el tribunal exista en el maestro
     court=`echo $1 | sed 's-^[^@]*@\([a-zA-Z\.\_0-9]*\)$-\1-'`
-    echo $court
+    #echo $court
     if [ `grep -wc $court "$MAEDIR/pjn.dat"` -eq 0 ]; then
 	#echo "el tribunal no existe"
 	return 4
@@ -253,30 +255,54 @@ function log_rejected_file(){
 
 #loguea informacion
 function log_data(){
-	echo -e  $1 >> "$LOGDIR/recept.log"
+	#echo -e  $1 >> "$LOGDIR/recept.log"
+	./logging.sh recept "$1"
 }
 
+
+function accept_file(){
+	$BINDIR/move.pl "$NOVEDIR/$1" "$ACEPDIR/" 
+}
+
+function reject_file(){
+	$BINDIR/move.pl "$NOVEDIR/$1" "$RECHDIR/"
+}
+
+function initialize_cycle_counter(){
+	touch "$CONFDIR/.recept_conf"
+	
+	CURRENTCOUNTER=`cat "$CONFDIR/.recept_conf" | grep 'RECEPT_COUNTER:[0-9]*'` 
+	if [ -z $CURRENTCOUNTER ]; then
+		#echo "current counter no existe"
+		echo "RECEPT_COUNTER:1" >> "$CONFDIR/.recept_conf"
+	fi
+	
+}
 
 ######################## FIN FUNCIONES #############################
 
 check_environment
 
+initialize_cycle_counter
 
 process_pid=0
 process_running=0
 while true ; do
 #cambio la variable recept counter y logueo ciclo
-current_cycle=`expr $RECEPTCOUNTER + 1`
-export RECEPTCOUNTER=$current_cycle
-log_date=`date "+%d/%m/%Y %H:%m:%S"`
-log_data "\n==================== RECEPT: CICLO $RECEPTCOUNTER ====================\n\nFecha: $log_date\n\n" 
+#current_cycle=`expr $RECEPTCOUNTER + 1`
+#export RECEPTCOUNTER=$current_cycle
+#log_date=`date "+%d/%m/%Y %H:%m:%S"`
+#log_data "\n==================== RECEPT: CICLO $RECEPTCOUNTER ====================\n\nFecha: $log_date\n\n" 
+
+#cargo el ciclo actual
+RECEPTCOUNTER=`cat $CONFDIR/.recept_conf | sed 's-RECEPT_COUNTER:\([0-9]*\)-\1-'`
+log_data "CiCLO Nº $RECEPTCOUNTER\n\n"
 
 #chequeo si hay archivos de bancos o de expedientes para actualizar
-log_data "CHEQUEO DE NOVEDADES:\n"
+#log_data "CHEQUEO DE NOVEDADES:\n"
 check_updates
-log_data "\n\n"
 
-log_data "PROCESOS:\n"
+#log_data "PROCESOS:\n"
 #echo $process_pid
 #si hay archivos de bancos aceptados y no hay procesos corriendo corro fsoldes
 if [ `ls -1 "$ACEPDIR" | grep -c "^[A-Z]*_[0-9]\{8\}$"` -gt 0 ]; then
@@ -290,15 +316,15 @@ if [ `ls -1 "$ACEPDIR" | grep -c "^[A-Z]*_[0-9]\{8\}$"` -gt 0 ]; then
 	if [ $process_pid -eq 0 ] || [ $process_running -eq 0 ]; then
 		#echo "no hay procesos corriendo"
 		#corro fsoldes
-		./mock_fsoldes.sh &
+		./fsoldes.sh &
 		process_pid=$!
-		log_data "FSOLDES corriendo bajo el número: $process_pid\n"
+		log_data "FSOLDES corriendo bajo el número: $process_pid"
 	else	
 		#echo "hay un proceso corriendo"
-		log_data "Invocacion de FSOLDES pospuesta para el siguiente ciclo\n" 
+		log_data "Invocacion de FSOLDES pospuesta para el siguiente ciclo" 
 	fi	
 else
-	log_data "No hay archivos de bancos para procesar\n"
+	log_data "No hay archivos de bancos para procesar"
 
 fi
 
@@ -314,20 +340,20 @@ if [ `ls -1 "$ACEPDIR" | grep -c "^[^@]*@[a-zA-Z\.\_0-9]*$"` -gt 0 ]; then
 	if [ $process_pid -eq 0 ] || [ $process_running -eq 0 ]; then
 		#echo "no hay procesos corriendo"
 		#corro cdossier
-		./mock_cdossier.sh &
+		./cdossier.sh &
 		process_pid=$!
-		log_data "CDOSSIER corriendo bajo el número: $process_pid\n"
+		log_data "CDOSSIER corriendo bajo el número: $process_pid\n\n"
 	else	
 		#echo "hay un proceso corriendo"
-		log_data "Invocacion de CDOSSIER pospuesta para el siguiente ciclo\n" 
+		log_data "Invocacion de CDOSSIER pospuesta para el siguiente ciclo\n\n" 
 	fi	
 else
-	log_data "No hay archivos de juzgados para procesar\n"
+	log_data "No hay archivos de juzgados para procesar\n\n"
 
 fi
 
-
-
-log_data "\n\n"
-sleep 10
+#actualizo contador de ciclos
+NEXTCYCLE=`expr $RECEPTCOUNTER + 1`
+sed -i "s-RECEPT_COUNTER:[0-9]*-RECEPT_COUNTER:$NEXTCYCLE-" $CONFDIR/.recept_conf
+sleep 20
 done

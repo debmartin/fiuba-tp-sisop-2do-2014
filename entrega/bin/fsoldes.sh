@@ -133,6 +133,7 @@ dir_saldos="$MAEDIR/saldos/"
 dir_saldos_ant="$MAEDIR/saldos/ant/"
 arch_saldos="$MAEDIR/saldos/saldos.tab"
 arch_saldos_lis="$MAEDIR/saldos/saldos.lis"
+dir_acept_proc="$ACEPDIR/proc"
 if [ ! -d "$dir_saldos" ]; then
 	mkdir $dir_saldos
 fi
@@ -146,6 +147,10 @@ fi
 if [ ! -f "$arch_saldos_lis" ]; then
 	touch $arch_saldos_lis
 	chmod +x $arch_saldos_lis
+fi
+
+if [ ! -d "$dir_acept_proc" ]; then
+	mkdir $dir_acept_proc
 fi
 
 #Listo todos los archivos que son para procesar
@@ -164,6 +169,7 @@ done
 if [ $cant_arch -eq 0 ]; then
 	./logging.sh fsoldes "No hay archivos para procesar \n" WAR
 	./logging.sh fsoldes "Fin de Fsoldes \n\n" INFO
+	exit
 fi
 
 for archivo in `ls $dir_arch_proc`; do

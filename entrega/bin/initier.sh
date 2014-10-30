@@ -2,8 +2,9 @@
 
 #HAY QUE CORRER EL PROGRAMA ASÍ: 'source initializer.sh', de manera que los exports perduren en la sesión.
 
-export grupo=07
-export CONF_FILE=$grupo/conf/Deployer.conf
+export grupo=..
+#export CONF_FILE=$grupo/conf/Deployer.conf
+export CONF_FILE=../conf/Deployer.conf
 
 log(){
 	./logging.sh initier $1 $2
@@ -57,6 +58,7 @@ loadConfig(){
 	if [ -f $CONF_FILE ]
 	then
 		export MAEDIR=`grep ^MAEDIR $grupo/conf/Deployer.conf | sed s/MAEDIR=//g | sed s/=.*//`
+		export CONFDIR=`grep ^CONFDIR $grupo/conf/Deployer.conf | sed s/CONFDIR=//g | sed s/=.*//`
 		export BINDIR=`grep ^BINDIR $grupo/conf/Deployer.conf | sed s/BINDIR=//g | sed s/=.*//`
 		export NOVEDIR=`grep ^NOVEDIR $grupo/conf/Deployer.conf | sed s/NOVEDIR=//g | sed s/=.*//`
 		export ACEPDIR=`grep ^ACEPDIR $grupo/conf/Deployer.conf | sed s/ACEPDIR=//g | sed s/=.*//`

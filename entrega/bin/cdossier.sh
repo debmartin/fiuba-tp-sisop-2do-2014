@@ -2,12 +2,12 @@
 #Cdossier
 
 ruta=`pwd`
-dir_arch_exp="$ruta/ACEPDIR/"
-dir_arch_proc="$ruta/ACEPDIR/proc"
-dir_arch_rech="$ruta/RECHDIR"
-dir_arch_saldos="$ruta/MAEDIR/saldos/saldos.lis"
-dir_arc_repodir="$ruta/REPODIR"
-dir_exp_output="$ruta/REPODIR/exp_output"
+dir_arch_exp="$ACEPDIR"
+dir_arch_proc="$ACEPDIR/proc"
+dir_arch_rech="$RECHDIR"
+dir_arch_saldos="$MAEDIR/saldos/saldos.lis"
+dir_arc_repodir="$REPODIR"
+dir_exp_output="$REPODIR/exp_output"
 reg_leidos=0
 reg_ignorados=0
 reg_reemplazados=0
@@ -20,9 +20,9 @@ aDespacho="A DESPACHO"
 enCasillero="EN CASILLERO"
 
 #Inicializo carpetas
-dir_repodir_ant="$ruta/REPODIR/ant"
-dir_rech="$ruta/RECHDIR"
-dir_log="$ruta/LOGDIR"
+dir_repodir_ant="$REPODIR/ant"
+dir_rech="$RECHDIR"
+dir_log="$LOGDIR"
 
 if [ ! -d "$dir_repodir_ant" ]; then
     mkdir $dir_repodir_ant
@@ -37,12 +37,19 @@ if [ ! -d "$dir_arch_proc" ]; then
     mkdir $dir_arch_proc
 fi
 
+#inicializo archivo de saldos
+touch $dir_arch_saldos
+#inicializo archivo de output
+touch $dir_exp_output
+
 #FUNCIONES AUXILIARES
 
 # Los archivos de ACEPDIR que se encuentran en ACEPDIR/proc se los mueve a RECHDIR.
 function moverDuplicados {
-	aceptados=`ls $dir_arch_exp`
-	procesados=`ls $dir_arch_proc`	
+	#aceptados=`ls $dir_arch_exp`
+	aceptados=`ls $dir_arch_exp | grep "^[^@]*@[a-zA-Z\.\_0-9]*$"`
+	#procesados=`ls $dir_arch_proc`	
+	procesados=`ls $dir_arch_proc | grep "^[^@]*@[a-zA-Z\.\_0-9]*$"`	
 	for i in $aceptados
 	do
 		for j in $procesados;
@@ -50,7 +57,8 @@ function moverDuplicados {
 			if [ $i = $j ]; then
 				./logging.sh cdossier "Archivo a procesar: $i"
 				./logging.sh cdossier "Archivo duplicado. Se rechaza el archivo" INFO
-				mv "$dir_arch_exp/$i" "$dir_arch_rech"				
+				#mv "$dir_arch_exp/$i" "$dir_arch_rech"				
+				$BINDIR/move.pl "$dir_arch_exp/$i" "$dir_arch_rech/" cdossier
 			fi
 		done
 	done
@@ -146,12 +154,14 @@ for archivo in `ls $dir_arch_exp`; do
     	    	fi	   
             else
                 ./logging.sh cdossier "Archivo con formato erróneo. Se rechaza el archivo."
-                mv "$dir_arch_exp/$archivo" "$dir_arch_rech"    
-                break                
+                #mv "$dir_arch_exp/$archivo" "$dir_arch_rech"    
+                $BINDIR/move.pl "$dir_arch_exp/$archivo" "$dir_arch_rech/" cdossier
+		break                
             fi      
 		done < $dir_arch_exp/$archivo    	
         if [[ formato_correcto -eq 1 ]]; then
-    		mv "$dir_arch_exp/$archivo" "$dir_arch_proc"    
+    		#mv "$dir_arch_exp/$archivo" "$dir_arch_proc"
+		$BINDIR/move.pl "$dir_arch_exp/$archivo" "$dir_arch_proc/" cdossier
             ./logging.sh cdossier "Cantidad de registros leidos: $reg_leidos" INFO
             ./logging.sh cdossier "Cantidad de registros ignorados: $reg_ignorados" INFO
             ./logging.sh cdossier "Cantidad de registros reemplazados: $reg_reemplazados" INFO
