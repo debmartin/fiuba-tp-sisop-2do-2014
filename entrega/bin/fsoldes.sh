@@ -152,6 +152,12 @@ fi
 if [ ! -d "$dir_acept_proc" ]; then
 	mkdir $dir_acept_proc
 fi
+arch_bancos="$MAEDIR/bancos.dat"
+if [ ! -f $arch_bancos ]; then
+	./logging.sh fsoldes "El archivo de bancos <bancos.dat> no se encuentra \n" ERR
+	./logging.sh fsoldes "Fin de Fsoldes \n\n" INFO
+	exit
+fi
 
 #Listo todos los archivos que son para procesar
 dir_arch_proc="$ACEPDIR"
@@ -180,7 +186,6 @@ for archivo in `ls $dir_arch_proc`; do
 		entidad=`echo $archivo | sed 's-\(^[^0-9]*\)_[0-9]*-\1-'`
 		fecha=`echo $archivo | sed 's-^[^0-9]*_\([0-9]*\)-\1-'`
 		esta_entidad=`cat $arch_saldos | grep -c "^${entidad}"`
-		arch_bancos="$MAEDIR/bancos.dat"
 		cod_entidad=`grep "^${entidad}" $arch_bancos | cut -d ";" -f 2`
 		
 		#Si no esta la entidad en el saldos.tab solo proceso el archivo
