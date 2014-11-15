@@ -63,8 +63,8 @@ grabar_log_listado_componentes() {
 		[ -d "../${!directorio}" ] && ( MSJ+="$(ls ../${!directorio})"; )
 		
 		mostrar_y_grabar "$0" "INFO" "$MSJ"
-		if [ "$#" -ge "2" ]; then
-			mostrar_y_grabar "$0" "INFO" "Espacio mínimo libre para flujo de novedades: $1 Mb"
+		if [ "$#" -ge "1" ] && [ $directorio == "ACEPDIR" ]; then
+			mostrar_y_grabar "$0" "INFO" "Espacio mínimo libre para flujo de novedades: ${!1} Mb"
 		fi
 	done
 	#grabar_log "Listado de Otras Variables Definidas"
@@ -183,7 +183,7 @@ definir_parametros_instalacion() {
 		MSJ+=" (${!directorio}): "
 		mostrar_y_grabar "$0" "INFO" "$MSJ"
 		local entrada=""
-		read $entrada
+		read entrada
 		if [ "$entrada" != "" ]; then
 			eval $directorio="'$entrada'"
 		fi
@@ -191,9 +191,17 @@ definir_parametros_instalacion() {
 			local GRUPO_ESCAPE="$(echo "$GRUPO" | sed 's/[[\.*^$/]/\\&/g')"
 			eval $directorio="'$(echo ${!directorio} | sed "s/$GRUPO_ESCAPE\///")'"
 		fi
-		if [ "$directorio" == "$NOVEDIR" ]; then
-			mostrar_y_grabar "$0" "INFO" "Defina espacio mínimo libre para el arribo de novedades en Mbytes ($DATASIZE): "
-			read DATASIZE
+		if [ "$directorio" == "NOVEDIR" ]; then
+			entrada="A"
+			comp="$(echo $entrada | sed -n '/^[0-9]*$/p')"
+			while [ "$comp" == "" ] && [ "$entrada" != "" ]; do
+				mostrar_y_grabar "$0" "INFO" "Defina espacio mínimo libre para el arribo de novedades en Mbytes ($DATASIZE): "
+				read entrada
+				comp="$(echo $entrada | sed -n '/^[0-9]*$/p')"
+			done			
+			if [ "$entrada" != "" ]; then
+				DATASIZE=$entrada
+			fi
 			local ESPACIO=$(df -k . | awk '/[0-9]%/{print $(NF-2)}')
 			if [ "$ESPACIO" -lt "$DATASIZE" ]; then
 				mostrar_y_grabar "$0" "ERR" "Insuficiente espacio en disco.\nEspacio disponible: $ESPACIO Mb.\nEspacio requerido $DATASIZE Mb\nCancele la instalación o inténtelo nuevamente."
@@ -239,7 +247,7 @@ guardar_archivo_configuracion() {
 	touch "../$ARCHCONF"
 	local FECHA=$(date +"%d/%m/%Y - %H:%M:%S")
 	local PATH_ABSOLUTO="$(cd "$(dirname "../../")" && pwd)"
-	echo "$GRUPO=$USER=$FECHA" >> "../$ARCHCONF"
+	echo "GRUPO=$PATH_ABSOLUTO=$USER=$FECHA" >> "../$ARCHCONF"
 
 	for directorio in "${DIRECTORIOS[@]}"; do
 		PATH_ABSOLUTO="$(cd "$(dirname "../${!directorio}")" && pwd)"
