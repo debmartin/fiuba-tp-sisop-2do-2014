@@ -11,9 +11,27 @@ function procesarArchivo {
 	arch_bancos="$MAEDIR/bancos.dat"
 	cod_entidad=`grep "^${entidad}" $arch_bancos | cut -d ";" -f 2`
 	primer_campo_cbu=`grep "^${entidad}" $arch_bancos | cut -d ";" -f 4`
+	if [ -z $(echo $primer_campo_cbu | grep "^[0-9]") ]; then
+		./logging.sh fsoldes "Error en primer campo del cbu en <bancos.dat> de la entidad a procesar (no es un número con formato N)." ERR
+		./logging.sh fsoldes "Se rechaza el archivo <$archivo>." ERR
+		./move.pl "$dir_arch_proc/$archivo" "$RECHDIR/" fsoldes
+		continue
+	fi
 	ubic_campo_saldo=`grep "^${entidad}" $arch_bancos | cut -d ";" -f 5`
+	if [ -z $(echo $ubic_campo_saldo | grep "^[0-9]") ]; then
+		./logging.sh fsoldes "Error en ubicacion del campo saldo en <bancos.dat> de la entidad a procesar (no es un número con formato N)." ERR
+		./logging.sh fsoldes "Se rechaza el archivo <$archivo>." ERR
+		./move.pl "$dir_arch_proc/$archivo" "$RECHDIR/" fsoldes
+		continue
+	fi
 	format=`grep "^${entidad}" $arch_bancos | cut -d ";" -f 6`
 	format_cbu=`echo ${format} | tr -d '\n'` #Elimino fin de linea
+	if [ -z $(echo $format_cbu | grep "^[0-9]") ]; then
+		./logging.sh fsoldes "Error en formato del cbu en <bancos.dat> de la entidad a procesar (no es un número con formato N)." ERR
+		./logging.sh fsoldes "Se rechaza el archivo <$archivo>." ERR
+		./move.pl "$dir_arch_proc/$archivo" "$RECHDIR/" fsoldes
+		continue
+	fi
 	reg_rech=0
 	reg_acept=0
 	reg_leidos=0
@@ -41,12 +59,15 @@ function procesarArchivo {
 		fi
 
 		#Valido CBU de 22 numeros (Punto 6)
-		es_cbu_valido=`echo ${#cbu}`
-
-		if [ $es_cbu_valido -eq 22 ]; then
+		if [ ! -z $(echo $cbu | grep "^[0-9]\{22\}") ]; then
 			
 			#Armo registro para saldos.lis (Punto 7)
 			saldo=`echo $linea | cut -d ";" -f $ubic_campo_saldo`
+			#if [ -z $(echo $saldo | grep "^-\?[0-9]*,\?[0-9]*") ]; then
+			#	./logging.sh fsoldes "Error en saldo (no es un numero). Registro original <$linea>" ERR
+			#	./logging.sh fsoldes "Se rechaza el registro." ERR
+			#	continue
+			#fi
 			registro="${1};${cod_entidad};${cbu};${saldo}"
 			#Escribo en archivo temporal el registro
 			dir_temp="$MAEDIR/saldos/temp"
@@ -126,6 +147,7 @@ function procesarArchivo {
 if [ $INITIALIZED -ne 1 ]; then
 	./logging.sh fsoldes "Ambiente no inicializado, no se puede ejecutar Fsoldes \n" ERR
 	./logging.sh fsoldes "Fin de Fsoldes \n\n" INFO
+	exit
 fi
 
 #Inicializo carpetas, saldos.tab y saldos.lis en blanco (deberian estar creadas por el Deployer)
@@ -154,7 +176,7 @@ if [ ! -d "$dir_acept_proc" ]; then
 fi
 arch_bancos="$MAEDIR/bancos.dat"
 if [ ! -f $arch_bancos ]; then
-	./logging.sh fsoldes "El archivo de bancos <bancos.dat> no se encuentra \n" ERR
+	./logging.sh fsoldes "El archivo de bancos <bancos.dat> no se encuentra. \n" ERR
 	./logging.sh fsoldes "Fin de Fsoldes \n\n" INFO
 	exit
 fi
@@ -164,7 +186,7 @@ dir_arch_proc="$ACEPDIR"
 cant_arch=0
 ./logging.sh fsoldes "Archivos de saldos a procesar:" INFO
 for archivo in `ls $dir_arch_proc`; do
-	es_arch=`echo $archivo | grep -c "^[A-Z]*_[0-9]\{8\}*"`
+	es_arch=`echo $archivo | grep -c "^[A-Z]*_[0-9]\{8\}"`
 	if [ $es_arch -eq 1 ] && [ -f "$dir_arch_proc/$archivo" ]; then
 		./logging.sh fsoldes "$archivo" INFO
 		cant_arch=$(($cant_arch + 1))
@@ -173,13 +195,13 @@ done
 
 #Punto 2
 if [ $cant_arch -eq 0 ]; then
-	./logging.sh fsoldes "No hay archivos para procesar \n" WAR
+	./logging.sh fsoldes "No hay archivos para procesar. \n" WAR
 	./logging.sh fsoldes "Fin de Fsoldes \n\n" INFO
 	exit
 fi
 
 for archivo in `ls $dir_arch_proc`; do
-	es_arch=`echo $archivo | grep -c "^[A-Z]*_[0-9]*"`
+	es_arch=`echo $archivo | grep -c "^[A-Z]*_[0-9]\{8\}"`
 	
 	#Agarro solo los archivos que cumplen con entidad_fecha
 	if [ $es_arch -eq 1 ] && [ -f "$dir_arch_proc/$archivo" ]; then
@@ -187,6 +209,13 @@ for archivo in `ls $dir_arch_proc`; do
 		fecha=`echo $archivo | sed 's-^[^0-9]*_\([0-9]*\)-\1-'`
 		esta_entidad=`cat $arch_saldos | grep -c "^${entidad}"`
 		cod_entidad=`grep "^${entidad}" $arch_bancos | cut -d ";" -f 2`
+		#Verifico que el codigo de entidad sea correcto en el bancos.dat
+		if [ -z $(echo $cod_entidad | grep "^[0-9]*") ]; then
+			./logging.sh fsoldes "Error en codigo de entidad en <bancos.dat> de la entidad a procesar (no es un número con formato NNN)." ERR
+			./logging.sh fsoldes "Se rechaza el archivo <$archivo>." ERR
+			./move.pl "$dir_arch_proc/$archivo" "$RECHDIR/" fsoldes
+			continue
+		fi
 		
 		#Si no esta la entidad en el saldos.tab solo proceso el archivo
 		if [ $esta_entidad -eq 0 ]; then
@@ -215,3 +244,4 @@ for archivo in `ls $dir_arch_proc`; do
 	fi
 done
 ./logging.sh fsoldes "Fin de Fsoldes \n\n" INFO
+exit
