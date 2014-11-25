@@ -121,8 +121,8 @@ initializeReceipt(){
 
 checkEnvironment
 if [ -z "$INITIALIZED" ]
-loadConfig
 then
+loadConfig
 	if [ "$CONFIG_LOADED" == 0 ] # Cargó las configuraciones
 	then
 		checkFileExists $MAEDIR
