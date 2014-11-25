@@ -4,33 +4,35 @@ function check_environment(){
 	#chequeo directorio maestro
 	if [ -z "$MAEDIR" ] || [ ! -d "$MAEDIR" ]; then
 		echo "El directorio Maestro no fue iniciazizado"
-		exit
+		return 1
 	fi
 	
   	if [ -z "$NOVEDIR" ] || [ ! -d "$NOVEDIR" ]; then
 		echo "El directorio Novedades no fue iniciazizado"
-		exit
+		return 1
 	fi
 
 	if [ -z "$ACEPDIR" ] || [ ! -d "$ACEPDIR" ]; then
 		echo "El directorio Aceptados no fue iniciazizado"
-		exit
+		return 1
 	fi
 
 	if [ -z "$RECHDIR" ] || [ ! -d "$RECHDIR" ]; then
 		echo "El directorio Rechazados no fue iniciazizado"
-		exit
+		return 1
 	fi
 
 	if [ -z "$LOGDIR" ] || [ ! -d "$LOGDIR" ]; then
 		echo "El directorio de Logs no fue iniciazizado"
-		exit
+		return 1
 	fi
 
 	if [ -z "$CONFDIR" ] || [ ! -d "$CONFDIR" ]; then
 		echo "El directo de confs no ha sido inicializado"
-		exit
+		return 1
 	fi
+
+	return 0
 	
 }
 
@@ -57,7 +59,7 @@ function check_updates(){
 			fi
 			#cambio el tipo de archivo a 1 para saber que es del tipo saldos
 			file_type=1
-		elif [ `echo $f | grep -c "^[^@]*@[a-zA-Z\.\_0-9]*$"` -gt 0 ]; then
+		elif [ `echo $f | grep -c "^[A-Z]*@[a-zA-Z\.\_0-9]*$"` -gt 0 ]; then
 			#chequeo si el nombre del archivo podria ser de expedientes
 			#echo "posiblemente sea un archivo de expedientes"
 			check_valid_records_file $f
@@ -203,14 +205,14 @@ function check_valid_records_file(){
     fi
 
     ## chequeo que la camara exista en el maestro de camaras
-    chamber=`echo $1 | sed 's-^\([^@]*\)@[a-zA-Z\.\_0-9]*$-\1-'`
+    chamber=`echo $1 | sed 's-^\([A-Z]*\)@[a-zA-Z\.\_0-9]*$-\1-'`
     #echo "camara $chamber"
     if [ `grep -wc $chamber "$MAEDIR/camaras.dat"` -eq 0 ]; then
 	#echo  "la camara no existe"
     	return 3
     fi
     ## chequeo que el tribunal exista en el maestro
-    court=`echo $1 | sed 's-^[^@]*@\([a-zA-Z\.\_0-9]*\)$-\1-'`
+    court=`echo $1 | sed 's-^[A-Z]*@\([a-zA-Z\.\_0-9]*\)$-\1-'`
     #echo $court
     if [ `grep -wc $court "$MAEDIR/pjn.dat"` -eq 0 ]; then
 	#echo "el tribunal no existe"
@@ -259,6 +261,12 @@ function log_data(){
 	./logging.sh recept "$1"
 }
 
+#loguea informacion
+function log_error(){
+	#echo -e  $1 >> "$LOGDIR/recept.log"
+	./logging.sh recept "$1" ERR
+}
+
 
 function accept_file(){
 	$BINDIR/move.pl "$NOVEDIR/$1" "$ACEPDIR/" 
@@ -279,11 +287,29 @@ function initialize_cycle_counter(){
 	
 }
 
+
+function check_master_directory(){
+	#chequeo archivos maestros
+	files_missing=0
+	if [ ! -f "$MAEDIR/bancos.dat" ]; then
+		log_error "No se encuentra el archivo bancos.dat\n"
+		files_missing=1
+	fi
+
+	if [ ! -f "$MAEDIR/camaras.dat" ]; then
+		log_error "No se encuentra el archivo camaras.dat\n"
+		files_missing=1
+	fi
+
+	if [ ! -f "$MAEDIR/pjn.dat" ]; then
+		log_error "No se encuentra el archivo pjn.dat\n"
+		files_missing=1
+	fi
+
+	return $files_missing
+}
+
 ######################## FIN FUNCIONES #############################
-
-check_environment
-
-initialize_cycle_counter
 
 process_pid=0
 process_running=0
@@ -294,66 +320,96 @@ while true ; do
 #log_date=`date "+%d/%m/%Y %H:%m:%S"`
 #log_data "\n==================== RECEPT: CICLO $RECEPTCOUNTER ====================\n\nFecha: $log_date\n\n" 
 
-#cargo el ciclo actual
-RECEPTCOUNTER=`cat $CONFDIR/.recept_conf | sed 's-RECEPT_COUNTER:\([0-9]*\)-\1-'`
-log_data "CiCLO Nº $RECEPTCOUNTER\n\n"
-
-#chequeo si hay archivos de bancos o de expedientes para actualizar
-#log_data "CHEQUEO DE NOVEDADES:\n"
-check_updates
-
-#log_data "PROCESOS:\n"
-#echo $process_pid
-#si hay archivos de bancos aceptados y no hay procesos corriendo corro fsoldes
-if [ `ls -1 "$ACEPDIR" | grep -c "^[A-Z]*_[0-9]\{8\}$"` -gt 0 ]; then
-	#echo "hay archivos de bancos"
-	#echo `ps -p $process_pid`
-	if [ $process_pid -gt 0 ]; then
-	   	process_running=`ps -p "$process_pid" | grep -wc "$process_pid"`
-	fi
-	
-	#echo $process_running
-	if [ $process_pid -eq 0 ] || [ $process_running -eq 0 ]; then
-		#echo "no hay procesos corriendo"
-		#corro fsoldes
-		./fsoldes.sh &
-		process_pid=$!
-		log_data "FSOLDES corriendo bajo el número: $process_pid"
-	else	
-		#echo "hay un proceso corriendo"
-		log_data "Invocacion de FSOLDES pospuesta para el siguiente ciclo" 
-	fi	
-else
-	log_data "No hay archivos de bancos para procesar"
-
+#chequeo que esten seteadas las carpetas
+check_environment
+if [ $? -gt 0 ]
+then
+	break
 fi
 
-#si hay archivos de expedientes aceptados y no hay procesos corriendo ejecuto cdossier
-if [ `ls -1 "$ACEPDIR" | grep -c "^[^@]*@[a-zA-Z\.\_0-9]*$"` -gt 0 ]; then
-	#echo "hay archivos de juzgados"
-	#echo `ps -p $process_pid`
-	if [ $process_pid -gt 0 ]; then
-	   	process_running=`ps -p "$process_pid" | grep -wc "$process_pid"`
+initialize_cycle_counter
+#cargo el ciclo actual
+RECEPTCOUNTER=`cat "$CONFDIR/.recept_conf" | sed 's-RECEPT_COUNTER:\([0-9]*\)-\1-'`
+log_data "CiCLO Nº $RECEPTCOUNTER\n\n"
+
+#chequeo si hay archivos en la carpeta master
+check_master_directory
+
+if [ $? -eq 0 ]; then
+	#chequeo si hay archivos de bancos o de expedientes para actualizar
+	#log_data "CHEQUEO DE NOVEDADES:\n"
+	check_updates
+
+	#log_data "PROCESOS:\n"
+	#echo $process_pid
+	#si hay archivos de bancos aceptados y no hay procesos corriendo corro fsoldes
+	if [ `ls -1 "$ACEPDIR" | grep -c "^[A-Z]*_[0-9]\{8\}$"` -gt 0 ]; then
+		#echo "hay archivos de bancos"
+		#echo `ps -p $process_pid`
+		if [ $process_pid -gt 0 ]; then
+		   	process_running=`ps -p "$process_pid" | grep -wc "$process_pid"`
+		fi
+		
+		#chequeo si esta el archivo para ejecutar fsoldes
+				#if [ -f "$BINDIR/fsoldes.sh" ]
+		if [ -f "$BINDIR/fsoldes.sh" ]; then
+			#echo $process_running
+			if [ $process_pid -eq 0 ] || [ $process_running -eq 0 ]; then
+				#echo "no hay procesos corriendo"
+				
+				#corro fsoldes
+				./fsoldes.sh &
+				#./mock_fsoldes.sh &
+				process_pid=$!
+				log_data "FSOLDES corriendo bajo el número: $process_pid"
+			else	
+				#echo "hay un proceso corriendo"
+				log_data "Invocacion de FSOLDES pospuesta para el siguiente ciclo" 
+			fi	
+		else
+			#logueo error
+			log_error "El script FSOLDES no se encuentra"
+		fi
+	else
+		log_data "No hay archivos de bancos para procesar"
+
 	fi
-	
-	#echo $process_running
-	if [ $process_pid -eq 0 ] || [ $process_running -eq 0 ]; then
-		#echo "no hay procesos corriendo"
-		#corro cdossier
-		./cdossier.sh &
-		process_pid=$!
-		log_data "CDOSSIER corriendo bajo el número: $process_pid\n\n"
-	else	
-		#echo "hay un proceso corriendo"
-		log_data "Invocacion de CDOSSIER pospuesta para el siguiente ciclo\n\n" 
-	fi	
-else
-	log_data "No hay archivos de juzgados para procesar\n\n"
+
+	#si hay archivos de expedientes aceptados y no hay procesos corriendo ejecuto cdossier
+	if [ `ls -1 "$ACEPDIR" | grep -c "^[^@]*@[a-zA-Z\.\_0-9]*$"` -gt 0 ]; then
+		#echo "hay archivos de juzgados"
+		#echo `ps -p $process_pid`
+		if [ $process_pid -gt 0 ]; then
+		   	process_running=`ps -p "$process_pid" | grep -wc "$process_pid"`
+		fi
+
+		if [ -f "$BINDIR/cdossier.sh" ]; then
+		
+			#echo $process_running
+			if [ $process_pid -eq 0 ] || [ $process_running -eq 0 ]; then
+			#echo "no hay procesos corriendo"
+			#corro cdossier
+				./cdossier.sh &
+				#./mock_cdossier.sh &
+				process_pid=$!
+				log_data "CDOSSIER corriendo bajo el número: $process_pid\n\n"
+			else
+				#echo "hay un proceso corriendo"
+				log_data "Invocacion de CDOSSIER pospuesta para el siguiente ciclo\n\n"
+			fi
+		else	
+			 #logueo error
+				log_error "El script CDOSSIER no se encuentra"
+		fi	
+	else
+		log_data "No hay archivos de juzgados para procesar\n\n"
+
+	fi
 
 fi
 
 #actualizo contador de ciclos
 NEXTCYCLE=`expr $RECEPTCOUNTER + 1`
-sed -i "s-RECEPT_COUNTER:[0-9]*-RECEPT_COUNTER:$NEXTCYCLE-" $CONFDIR/.recept_conf
+sed -i "s-RECEPT_COUNTER:[0-9]*-RECEPT_COUNTER:$NEXTCYCLE-" "$CONFDIR/.recept_conf"
 sleep 20
 done
