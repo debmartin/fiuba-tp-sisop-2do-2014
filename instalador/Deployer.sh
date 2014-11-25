@@ -5,6 +5,8 @@ INSTALADOR="instalador"
 CONFDIR="conf"
 ARCHLOG="$CONFDIR/Deployer.log"
 ARCHCONF="$CONFDIR/Deployer.conf"
+BINDIR_INSTALADOR="bin"
+MAEDIR_INSTALADOR="data"
 BINDIR="bin"
 MAEDIR="data"
 NOVEDIR="flux"
@@ -271,10 +273,10 @@ obtener_directorios() {
 instalar() {
 	crear_directorios
 	mostrar_y_grabar "$0" "INFO" "Instalando Programas y Funciones"
-	cp -r "$BINDIR/" "../"
+	cp -r "$BINDIR_INSTALADOR"/* "../$BINDIR"
 	mostrar_y_grabar "$0" "INFO" "Instalando Archivos Maestros y Tablas"
 	for archivo in "${ARCH_MAESTROS[@]}"; do
-		cp "$MAEDIR/$archivo" "../$MAEDIR/"
+		cp "$MAEDIR_INSTALADOR/$archivo" "../$MAEDIR/"
 	done
 	mostrar_y_grabar "$0" "INFO" "Actualizando la configuración del sistema"
 	guardar_archivo_configuracion
