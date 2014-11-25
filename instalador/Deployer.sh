@@ -20,6 +20,13 @@ ARCH_MAESTROS=( "camaras.dat" "bancos.dat" "pjn.dat" )
 DIRECTORIOS=( CONFDIR BINDIR MAEDIR NOVEDIR ACEPDIR REPODIR RECHDIR LOGDIR DUPDIR )
 
 
+definir_subdirectorios() {
+        SALDOS="$MAEDIR/saldos"
+        MANT="$MAEDIR/saldos/ant"
+        PROC="$ACEPDIR/proc"
+        RANT="$REPODIR/ant"
+        DIRECTORIOS_TOTALES=("${DIRECTORIOS[@]}" SALDOS MANT PROC RANT)
+}
 
 salir() {
 	#cerrar el archivo log
@@ -73,25 +80,28 @@ grabar_log_listado_componentes() {
 }
 
 directorios_completos() {
-	local directorios=($(ls -R | grep "\...*:$" | sed -e "s/\.\///g" -e "s/://g"))
-	directorios=("${directorios[@]%%:*}")
-	for directorio in "${directorios[@]}"; do
-		if [ ! -d "../$directorio/" ]; then
-			FALTANTES+=("$directorio/")
-			FALTANTES_STR+="$directorio/ "
-			continue
+        local DIRECTORIOS_TOTALES=("${DIRECTORIOS[@]}" SALDOS MANT PROC RANT)
+
+	for directorio in "${DIRECTORIOS_TOTALES[@]}"; do
+		if [ ! -d "../${!directorio}/" ]; then
+			FALTANTES+=("${!directorio}/")
+			FALTANTES_STR+="${!directorio}/ "
 		fi
-		
-		local contenidos_dir=$(ls "$directorio")
-		for archivo in "${contenidos_dir[@]}"; do
-			if [ -f "$directorio/$archivo" ]; then
-				if [ ! -f "../$directorio/$archivo" ]; then
-					FALTANTES+=( "$directorio/$archivo" )
-					FALTANTES_STR+="$directorio/$archivo "
-				fi
-			fi
-		done
 	done
+	for archivo in "${ARCH_MAESTROS[@]}"; do
+                if [ ! -f "../$MAEDIR/$archivo" ]; then
+                                FALTANTES+=( "$MAEDIR_INSTALADOR/$archivo" )
+                                FALTANTES_STR+="$MAEDIR/$archivo "
+                fi
+        done
+	local archivos_bindir=("$BINDIR_INSTALADOR"/*)
+	for archivo in "${archivos_bindir[@]}"; do
+		local arch_aux="$(echo "$archivo" | sed 's/'$BINDIR_INSTALADOR'\///')"
+                if [ ! -f "../$BINDIR/$arch_aux" ]; then
+                                 FALTANTES+=( "$BINDIR_INSTALADOR/$arch_aux" )
+                                 FALTANTES_STR+="$BINDIR/$arch_aux "
+                fi
+         done
 }
 
 instalacion_esta_completa() {
@@ -226,12 +236,9 @@ directorios_son_correctos() {
 }
 
 crear_directorios() {
-	local SALDOS="$MAEDIR/saldos"
-	local MANT="$MAEDIR/saldos/ant"
-	local PROC="$ACEPDIR/proc"
-	local RANT="$REPODIR/ant"
 	local DIRECTORIOS_TOTALES=("${DIRECTORIOS[@]}" SALDOS MANT PROC RANT)
 	mostrar_y_grabar "$0" "INFO" "Creando Estructuras de directorio. . . ."
+
 	for directorio in "${DIRECTORIOS_TOTALES[@]}"; do
 		local DIR="../${!directorio}"
 		if [ ! -d "$DIR" ]; then
@@ -290,6 +297,7 @@ grabar_mensajes_iniciales
 
 if [ -f "../$ARCHCONF" ]; then
 	obtener_directorios
+	definir_subdirectorios
 	instalacion_esta_completa
 	if [ $? -eq 0 ]; then
 		grabar_log_instalacion_completa
@@ -329,6 +337,7 @@ while true; do
 		break;
 	fi
 done
+definir_subdirectorios
 confirmar_inicio_instalacion
 chequear_salida $?
 instalar
